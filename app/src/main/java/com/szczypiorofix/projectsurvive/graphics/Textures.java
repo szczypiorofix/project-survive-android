@@ -11,7 +11,7 @@ final public class Textures {
 
     private static Textures instance = null;
 
-    public Bitmap[] groundTiles = new Bitmap[20];
+    public Bitmap[] groundTiles = new Bitmap[28];
 
     public Bitmap[] idlePlayerL = new Bitmap[2];
     public Bitmap[] idlePlayerR = new Bitmap[2];
@@ -43,9 +43,9 @@ final public class Textures {
         buttonJumpPressedImage = buttonTilesSheet.getSprite(2, 3);
 
         tiles_x = 3;
-        tiles_y = 6;
+        tiles_y = 9;
 
-        Bitmap groundTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.tileset_32), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
+        Bitmap groundTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.tiles_16_topdown), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet groundTilesSheet = new SpriteSheet(groundTileSheetBitmap, tiles_x, tiles_y);
 
         groundTiles[0] = groundTilesSheet.getSprite(1, 1);
@@ -65,6 +65,16 @@ final public class Textures {
         groundTiles[14] = groundTilesSheet.getSprite(3, 5);
         groundTiles[15] = groundTilesSheet.getSprite(1, 6);
         groundTiles[16] = groundTilesSheet.getSprite(2, 6);
+        groundTiles[17] = groundTilesSheet.getSprite(3, 6);
+        groundTiles[18] = groundTilesSheet.getSprite(1, 7);
+        groundTiles[19] = groundTilesSheet.getSprite(2, 7);
+        groundTiles[20] = groundTilesSheet.getSprite(3, 7);
+        groundTiles[21] = groundTilesSheet.getSprite(1, 8);
+        groundTiles[22] = groundTilesSheet.getSprite(2, 8);
+        groundTiles[23] = groundTilesSheet.getSprite(3, 8);
+        groundTiles[24] = groundTilesSheet.getSprite(1, 9);
+        groundTiles[25] = groundTilesSheet.getSprite(2, 9);
+        groundTiles[26] = groundTilesSheet.getSprite(3, 9);
 
 
         tiles_x = 4;
