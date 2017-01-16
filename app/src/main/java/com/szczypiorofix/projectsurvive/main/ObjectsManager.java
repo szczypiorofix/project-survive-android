@@ -30,16 +30,16 @@ public class ObjectsManager {
     private Player player;
 
     private final String[] level1 = {
-            "011111111111112eeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeee",
-            "677777777777778eeeeeeeeeeeeeeeeee",
-            "......................",
-            "......................",
-            "......................",
-            "......................"
+            "011111111111112eeeeeeeeeeeeeeeeeeee",
+            "344444444444445eeeeeeeeeeeeeeeeeeee",
+            "344444444444445eeeeeeeeeeeeeeeeeeeee",
+            "344444444444445eeeeeeeeeeeeeeeeeeeeee",
+            "344444444444445eeeeeeeeeeeeeeeeeeeeee",
+            "677777777777778eeeeeeeeeeeeeeeeeeeeeee",
+            "........................................",
+            ".........................................",
+            "..............................................",
+            "................................................"
 
     };
 
@@ -62,7 +62,6 @@ public class ObjectsManager {
             InputStream in_s = context.getApplicationContext().getAssets().open("level1.xml");
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in_s, null);
-
             parseXML(parser);
 
         } catch (XmlPullParserException e) {
@@ -75,21 +74,24 @@ public class ObjectsManager {
 
     private void parseXML(XmlPullParser parser) throws XmlPullParserException,IOException
     {
-        ArrayList<Character> products = null;
         int eventType = parser.getEventType();
-        char currentProduct;
 
         while (eventType != XmlPullParser.END_DOCUMENT){
             String name = null;
+
             switch (eventType){
                 case XmlPullParser.START_DOCUMENT:
-                    products = new ArrayList<>();
                     break;
                 case XmlPullParser.START_TAG:
                     name = parser.getName();
-                    if (name == "product"){
 
-                    }
+                        System.out.println(name);
+                        System.out.println("Atrybuty: "+parser.getAttributeCount());
+                        int arrtCount = parser.getAttributeCount();
+                        for (int i = 0; i < arrtCount; i++) {
+                            System.out.println("Atrybut: "+i +": "+parser.getAttributeName(i) +"="+parser.getAttributeValue(i));
+                        }
+
                     break;
                 case XmlPullParser.END_TAG:
                     name = parser.getName();
@@ -236,14 +238,10 @@ public class ObjectsManager {
                     case 'r':
                         scemery_List.add(new Scenery(Textures.getInstance(context, meshScale).groundTiles[26], x * meshScale, y * meshScale));
                         break;
-
-                    default:
-                        player = new Player(context, 5 * meshScale, 5 * meshScale, meshScale, this);
-                        player_List.add(player);
-                        break;
                 }
-
             }
+        player = new Player(context, 5 * meshScale, 5 * meshScale, meshScale, this);
+        player_List.add(player);
     }
 
 
