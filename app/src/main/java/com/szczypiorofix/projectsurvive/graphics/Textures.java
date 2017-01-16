@@ -24,11 +24,11 @@ final public class Textures {
 
     private Textures(Context context, float meshScale) {
 
-        backgroundImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.background_quake);
+        backgroundImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.background_quake),400, 400, false);
 
         // ILOSC TILESOW W RYSUNKU: X i Y
         int tiles_x = 2;
-        int tiles_y = 3;
+        int tiles_y = 4;
 
         Bitmap buttonTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.direction_buttons_big), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet buttonTilesSheet = new SpriteSheet(buttonTileSheetBitmap, tiles_x, tiles_y);
@@ -37,6 +37,8 @@ final public class Textures {
         buttonRightPressedImage = buttonTilesSheet.getSprite(2, 1);
         buttonLeftDefaultImage = buttonTilesSheet.getSprite(1, 2);
         buttonLeftPressedImage = buttonTilesSheet.getSprite(2, 2);
+        buttonJumpDefaultImage = buttonTilesSheet.getSprite(1, 3);
+        buttonJumpPressedImage = buttonTilesSheet.getSprite(2, 3);
         buttonJumpDefaultImage = buttonTilesSheet.getSprite(1, 3);
         buttonJumpPressedImage = buttonTilesSheet.getSprite(2, 3);
 

@@ -1,12 +1,18 @@
 package com.szczypiorofix.projectsurvive.main;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.szczypiorofix.projectsurvive.R;
+import com.szczypiorofix.projectsurvive.graphics.Textures;
+import com.szczypiorofix.projectsurvive.objects.Player;
 
 
 public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.Callback{
@@ -18,6 +24,10 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
     private int screenHeight;
     private int width, height;
     private float fps_count, ticks_count;
+    private InputController inputController;
+    private ObjectsManager objectsManager;
+    private Camera camera;
+    private Player player;
 
 
     public GameManager(Context context) {
@@ -27,13 +37,30 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
     public GameManager(Context context, int width, int height, float meshScale) {
         super(context);
 
+        this.width = width;
+        this.height = height;
+
         holder = getHolder();
         holder.addCallback(this);
 
+        objectsManager = new ObjectsManager(context, meshScale, camera);
+        objectsManager.loadLevel(1);
+        camera = new Camera(0, 0, width, height, meshScale);
+        player = objectsManager.getPlayer();
+
+        inputController = new InputController(height, player, meshScale, context);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        inputController.handleInputs(event);
+        return true;
     }
 
     void tick() {
-
+        objectsManager.tick();
+        camera.tick(player);
     }
 
     void render(Canvas canvas) {
@@ -43,6 +70,12 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
 
         canvas.drawText("FPS: "+fps_count, 10, 20, paint);
         canvas.drawText("UPS: "+ticks_count, 10, 40, paint);
+
+        canvas.translate(camera.getX(), camera.getY());
+        objectsManager.render(canvas);
+        canvas.translate(-camera.getX(), -camera.getY());
+
+        inputController.drawButtons(canvas);
     }
 
 

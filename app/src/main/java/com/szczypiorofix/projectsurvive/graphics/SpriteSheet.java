@@ -16,7 +16,7 @@ public class SpriteSheet {
     }
 
     public Bitmap getSprite(int col, int row) {
-        System.out.println("Reading sprite: "+col+":"+row+"...");
+        //System.out.println("Reading sprite: "+col+":"+row+"...");
         return Bitmap.createBitmap(bitmap, (col-1) * tileWidth , (row-1) * tileHeight , tileWidth, tileHeight);
     }
 

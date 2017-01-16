@@ -36,6 +36,9 @@ public abstract class GameObject {
     public abstract boolean isAction();
     public abstract void setAction(boolean action);
 
+    public abstract boolean canFall();
+    public abstract void setCanFall(boolean canFall);
+
     public abstract Direction getDirection();
     public abstract void setDirection(Direction direction);
 }
