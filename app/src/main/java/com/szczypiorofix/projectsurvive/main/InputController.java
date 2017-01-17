@@ -32,13 +32,13 @@ public class InputController {
         buttonRight =
                 new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *5, screenHeight - ((int) meshScale *3));
 
-        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonJumpDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonJumpPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
         buttonUp =
                 new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *3, screenHeight - ((int) meshScale *4));
 
-        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonJumpDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonJumpPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
         buttonDown =
                 new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *3, screenHeight - ((int) meshScale*2));;
     }
@@ -61,7 +61,6 @@ public class InputController {
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
-            case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
 
@@ -91,6 +90,49 @@ public class InputController {
                 {
                     player.setMoveS(true);
                     buttonDown.setPressed(true);
+                }
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                if (x > buttonRight.getX() && x < buttonRight.getX() +buttonRight.getWidth()
+                        && y > buttonRight.getY() && y < buttonRight.getY() + buttonRight.getHeight())
+                {
+                    player.setMoveE(true);
+                    buttonRight.setPressed(true);
+                }
+                else {
+                    player.setMoveE(false);
+                    buttonRight.setPressed(false);
+                }
+                if (x > buttonLeft.getX() && x < buttonLeft.getX() +buttonLeft.getWidth()
+                        && y > buttonLeft.getY() && y < buttonLeft.getY() + buttonLeft.getHeight())
+                {
+                    player.setMoveW(true);
+                    buttonLeft.setPressed(true);
+                }
+                else {
+                    player.setMoveW(false);
+                    buttonLeft.setPressed(false);
+                }
+                if (x > buttonUp.getX() && x < buttonUp.getX() +buttonUp.getWidth()
+                        && y > buttonUp.getY() && y < buttonUp.getY() + buttonUp.getHeight())
+                {
+                    player.setMoveN(true);
+                    buttonUp.setPressed(true);
+                }
+                else {
+                    player.setMoveN(false);
+                    buttonUp.setPressed(false);
+                }
+                if (x > buttonDown.getX() && x < buttonDown.getX() +buttonDown.getWidth()
+                        && y > buttonDown.getY() && y < buttonDown.getY() + buttonDown.getHeight())
+                {
+                    player.setMoveS(true);
+                    buttonDown.setPressed(true);
+                }
+                else {
+                    player.setMoveS(false);
+                    buttonDown.setPressed(false);
                 }
                 break;
 
@@ -124,7 +166,21 @@ public class InputController {
                     buttonDown.setPressed(false);
                 }
                 break;
+
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_OUTSIDE:
+
+                buttonDown.setPressed(false);
+                buttonLeft.setPressed(false);
+                buttonRight.setPressed(false);
+                buttonUp.setPressed(false);
+                player.setMoveS(false);
+                player.setMoveN(false);
+                player.setMoveE(false);
+                player.setMoveW(false);
+                break;
+
         }
-        System.out.println(player.getX()+":"+player.getY());
+        //System.out.println(player.getX()+":"+player.getY());
     }
 }

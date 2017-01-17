@@ -1,8 +1,6 @@
 package com.szczypiorofix.projectsurvive.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,8 +8,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.szczypiorofix.projectsurvive.R;
-import com.szczypiorofix.projectsurvive.graphics.Textures;
+
 import com.szczypiorofix.projectsurvive.objects.Player;
 
 
@@ -42,6 +39,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
 
         holder = getHolder();
         holder.addCallback(this);
+        holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
 
         objectsManager = new ObjectsManager(context, meshScale, camera);
         objectsManager.loadLevel(1);

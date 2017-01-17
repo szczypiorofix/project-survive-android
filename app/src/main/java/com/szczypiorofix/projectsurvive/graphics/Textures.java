@@ -19,7 +19,7 @@ final public class Textures {
     public Bitmap[] runPlayerL = new Bitmap[4];
     public Bitmap[] runPlayerR = new Bitmap[4];
 
-    public Bitmap buttonLeftPressedImage, buttonLeftDefaultImage, buttonRightPressedImage, buttonRightDefaultImage, buttonJumpPressedImage, buttonJumpDefaultImage;
+    public Bitmap buttonLeftPressedImage, buttonLeftDefaultImage, buttonRightPressedImage, buttonRightDefaultImage, buttonUpPressedImage, buttonUpDefaultImage, buttonDownPressedImage, buttonDownDefaultImage;
     public Bitmap backgroundImage;
 
     private Textures(Context context, float meshScale) {
@@ -37,10 +37,14 @@ final public class Textures {
         buttonRightPressedImage = buttonTilesSheet.getSprite(2, 1);
         buttonLeftDefaultImage = buttonTilesSheet.getSprite(1, 2);
         buttonLeftPressedImage = buttonTilesSheet.getSprite(2, 2);
-        buttonJumpDefaultImage = buttonTilesSheet.getSprite(1, 3);
-        buttonJumpPressedImage = buttonTilesSheet.getSprite(2, 3);
-        buttonJumpDefaultImage = buttonTilesSheet.getSprite(1, 3);
-        buttonJumpPressedImage = buttonTilesSheet.getSprite(2, 3);
+        buttonUpDefaultImage = buttonTilesSheet.getSprite(1, 3);
+        buttonUpPressedImage = buttonTilesSheet.getSprite(2, 3);
+
+        buttonUpDefaultImage = buttonTilesSheet.getSprite(1, 3);
+        buttonUpPressedImage = buttonTilesSheet.getSprite(2, 3);
+
+        buttonDownDefaultImage = buttonTilesSheet.getSprite(1, 4);
+        buttonDownPressedImage = buttonTilesSheet.getSprite(2, 4);
 
         tiles_x = 3;
         tiles_y = 9;
