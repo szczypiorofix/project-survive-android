@@ -11,7 +11,7 @@ public class MainActivity extends Activity {
 
 
     private GameManager gameManager;
-
+    private final int TILES_ON_HEIGHT = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 
         System.out.println("Screen size " +screenWidth +":" +screenHeight);
 
-        gameManager = new GameManager(this, screenWidth, screenHeight, screenHeight / 10);
+        gameManager = new GameManager(this, screenWidth, screenHeight, screenHeight / TILES_ON_HEIGHT);
         setContentView(gameManager);
     }
 

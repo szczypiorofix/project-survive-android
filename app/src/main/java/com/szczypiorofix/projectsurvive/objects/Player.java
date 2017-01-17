@@ -50,6 +50,7 @@ public class Player extends GameObject {
 
     @Override
     public void tick(LinkedList<GameObject> objects) {
+
         x += velX;
         y += velY;
     }
@@ -170,7 +171,6 @@ public class Player extends GameObject {
             velX = -MAX_SPEED;
             direction = Direction.WEST;
         }
-        else velX = 0;
     }
 
     public void setMoveE(boolean move) {
@@ -178,7 +178,6 @@ public class Player extends GameObject {
             velX = MAX_SPEED;
             direction = Direction.EAST;
         }
-        else velX = 0;
     }
 
     public void setMoveN(boolean move) {
@@ -186,7 +185,6 @@ public class Player extends GameObject {
             velY = -MAX_SPEED;
             direction = Direction.NORTH;
         }
-        else velY = 0;
     }
 
     public void setMoveS(boolean move) {
@@ -194,6 +192,5 @@ public class Player extends GameObject {
             velY = MAX_SPEED;
             direction = Direction.SOUTH;
         }
-        else velY = 0;
     }
 }

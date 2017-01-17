@@ -27,35 +27,21 @@ public class ObjectsManager {
     private float meshScale;
     private Camera camera;
     private Player player;
-
+    private int width, height;
     private int tileMapWidth, tileMapHeight;
     private int tileWidth, tileHeight;
     private int tiles[][];
 
-    private final String[] level1 = {
-            "011111111111112eeeeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeeeeeee",
-            "344444444444445eeeeeeeeeeeeeeeeeeeeee",
-            "677777777777778eeeeeeeeeeeeeeeeeeeeeee",
-            "........................................",
-            ".........................................",
-            "..............................................",
-            "................................................"
-
-    };
-
-    private final String[] level2 = {
-            "..........................................................................................................",
-            ".........................................................................................................."
-    };
 
 
-    ObjectsManager(Context context, float meshScale, Camera camera) {
+
+
+    ObjectsManager(Context context, float meshScale, Camera camera, int width, int height) {
         this.context = context;
         this.meshScale = meshScale;
         this.camera = camera;
+        this.width = width;
+        this.height = height;
 
         // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
@@ -64,7 +50,7 @@ public class ObjectsManager {
             pullParserFactory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = pullParserFactory.newPullParser();
 
-            InputStream in_s = context.getApplicationContext().getAssets().open("level1.xml");
+            InputStream in_s = context.getApplicationContext().getAssets().open("levels/level1.xml");
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in_s, null);
 
@@ -111,9 +97,7 @@ public class ObjectsManager {
             }
 
             in_s.close();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -122,6 +106,12 @@ public class ObjectsManager {
     private void iteratingTick(LinkedList<GameObject> list)
     {
         for (int i = 0; i < list.size(); i++) {
+
+            if ((list.get(i).getX() < -camera.getX()+ width) && (list.get(i).getX() > -camera.getX()-meshScale)
+                && (list.get(i).getY() < - camera.getY() + height) && (list.get(i).getY() > -camera.getY()-meshScale))
+                list.get(i).setVisible(true);
+            else list.get(i).setVisible(false);
+
             list.get(i).tick(list);
         }
     }
@@ -160,15 +150,15 @@ public class ObjectsManager {
         for (int x = 0; x < tileMapWidth; x++) {
             for (int y = 0; y < tileMapHeight; y++) {
 
-                //System.out.println(x+":"+y+ "  --- " +tiles[x][y]);
                 int s = tiles[x][y];
-
                 scemery_List.add(new Scenery(Textures.getInstance(context, meshScale).groundTiles[s], x * meshScale, y * meshScale));
             }
         }
 
         player = new Player(context, 5 * meshScale, 5 * meshScale, meshScale, this);
         player_List.add(player);
+
+        System.out.println("Lista: "+scemery_List.size());
     }
 
 

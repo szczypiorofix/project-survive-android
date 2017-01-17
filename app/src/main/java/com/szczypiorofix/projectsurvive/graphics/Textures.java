@@ -30,7 +30,7 @@ final public class Textures {
         int tiles_x = 2;
         int tiles_y = 4;
 
-        Bitmap buttonTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.direction_buttons_big), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
+        Bitmap buttonTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.direction_buttons), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet buttonTilesSheet = new SpriteSheet(buttonTileSheetBitmap, tiles_x, tiles_y);
 
         buttonRightDefaultImage = buttonTilesSheet.getSprite(1, 1);

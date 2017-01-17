@@ -10,37 +10,41 @@ import com.szczypiorofix.projectsurvive.graphics.SteeringButton;
 import com.szczypiorofix.projectsurvive.graphics.Textures;
 import com.szczypiorofix.projectsurvive.objects.Player;
 
-public class InputController {
+class InputController {
 
-    private Player player;
     private SteeringButton buttonLeft, buttonRight, buttonUp, buttonDown;
 
 
+    // https://github.com/acaudwell/Gource/wiki/Controls
 
-    InputController(int screenHeight, Player player, float meshScale, Context context) {
-        this.player = player;
+    // http://gource.io/#news    --   Grafiki
 
-        Bitmap bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonLeftDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        Bitmap bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonLeftPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+
+
+
+    InputController(int screenHeight, float meshScale, Context context) {
+
+        Bitmap bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonLeftDefaultImage, (int) meshScale, (int) (meshScale), false);
+        Bitmap bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonLeftPressedImage, (int) meshScale, (int) (meshScale), false);
 
         buttonLeft =
-                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale, screenHeight - ((int) meshScale *3));
+                new SteeringButton(bitmapDefault, bitmapPressed, 1, screenHeight - ((int) meshScale));
 
-        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonRightDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonRightPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonRightDefaultImage, (int) meshScale, (int) (meshScale), false);
+        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonRightPressedImage, (int) meshScale, (int) (meshScale), false);
 
         buttonRight =
-                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *5, screenHeight - ((int) meshScale *3));
+                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *2, screenHeight - ((int) meshScale));
 
-        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpDefaultImage, (int) meshScale, (int) (meshScale), false);
+        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonUpPressedImage, (int) meshScale, (int) (meshScale), false);
         buttonUp =
-                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *3, screenHeight - ((int) meshScale *4));
+                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale, screenHeight - ((int) meshScale *2));
 
-        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownDefaultImage, (int) meshScale*2, (int) (meshScale*2), false);
-        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownPressedImage, (int) meshScale*2, (int) (meshScale*2), false);
+        bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownDefaultImage, (int) meshScale, (int) (meshScale), false);
+        bitmapPressed = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonDownPressedImage, (int) meshScale, (int) (meshScale), false);
         buttonDown =
-                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale *3, screenHeight - ((int) meshScale*2));;
+                new SteeringButton(bitmapDefault, bitmapPressed, (int) meshScale, screenHeight - ((int) meshScale));
     }
 
     void drawButtons(Canvas canvas) {
@@ -53,6 +57,7 @@ public class InputController {
     void handleInputs(MotionEvent event) {
 
         // https://developer.android.com/training/gestures/multi.html
+
 
         int i = event.getActionIndex();
 
@@ -67,120 +72,110 @@ public class InputController {
                 if (x > buttonRight.getX() && x < buttonRight.getX() +buttonRight.getWidth()
                         && y > buttonRight.getY() && y < buttonRight.getY() + buttonRight.getHeight())
                 {
-                    player.setMoveE(true);
                     buttonRight.setPressed(true);
+                    //buttonLeft.setPressed(false);
+                    //buttonRight.setPressed(false);
+                    //buttonUp.setPressed(false);
+                    //buttonDown.setPressed(false);
+                    break;
                 }
-                else
+
                 if (x > buttonLeft.getX() && x < buttonLeft.getX() +buttonLeft.getWidth()
                         && y > buttonLeft.getY() && y < buttonLeft.getY() + buttonLeft.getHeight())
                 {
-                    player.setMoveW(true);
                     buttonLeft.setPressed(true);
                 }
-                else
+
                 if (x > buttonUp.getX() && x < buttonUp.getX() +buttonUp.getWidth()
                         && y > buttonUp.getY() && y < buttonUp.getY() + buttonUp.getHeight())
                 {
-                    player.setMoveN(true);
                     buttonUp.setPressed(true);
                 }
-                else
+
                 if (x > buttonDown.getX() && x < buttonDown.getX() +buttonDown.getWidth()
                         && y > buttonDown.getY() && y < buttonDown.getY() + buttonDown.getHeight())
                 {
-                    player.setMoveS(true);
                     buttonDown.setPressed(true);
                 }
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                if (x > buttonRight.getX() && x < buttonRight.getX() +buttonRight.getWidth()
-                        && y > buttonRight.getY() && y < buttonRight.getY() + buttonRight.getHeight())
-                {
-                    player.setMoveE(true);
-                    buttonRight.setPressed(true);
-                }
-                else {
-                    player.setMoveE(false);
-                    buttonRight.setPressed(false);
-                }
-                if (x > buttonLeft.getX() && x < buttonLeft.getX() +buttonLeft.getWidth()
-                        && y > buttonLeft.getY() && y < buttonLeft.getY() + buttonLeft.getHeight())
-                {
-                    player.setMoveW(true);
-                    buttonLeft.setPressed(true);
-                }
-                else {
-                    player.setMoveW(false);
-                    buttonLeft.setPressed(false);
-                }
-                if (x > buttonUp.getX() && x < buttonUp.getX() +buttonUp.getWidth()
-                        && y > buttonUp.getY() && y < buttonUp.getY() + buttonUp.getHeight())
-                {
-                    player.setMoveN(true);
-                    buttonUp.setPressed(true);
-                }
-                else {
-                    player.setMoveN(false);
-                    buttonUp.setPressed(false);
-                }
-                if (x > buttonDown.getX() && x < buttonDown.getX() +buttonDown.getWidth()
-                        && y > buttonDown.getY() && y < buttonDown.getY() + buttonDown.getHeight())
-                {
-                    player.setMoveS(true);
-                    buttonDown.setPressed(true);
-                }
-                else {
-                    player.setMoveS(false);
-                    buttonDown.setPressed(false);
-                }
-                break;
 
+                    if (x > buttonRight.getX() && x < buttonRight.getX() +buttonRight.getWidth()
+                            && y > buttonRight.getY() && y < buttonRight.getY() + buttonRight.getHeight())
+                    {
+                        buttonRight.setPressed(true);
+                    }
+                    else buttonRight.setPressed(false);
+                    if (x > buttonLeft.getX() && x < buttonLeft.getX() +buttonLeft.getWidth()
+                            && y > buttonLeft.getY() && y < buttonLeft.getY() + buttonLeft.getHeight())
+                    {
+                        buttonLeft.setPressed(true);
+                    }
+                    else buttonLeft.setPressed(false);
+                    if (x > buttonUp.getX() && x < buttonUp.getX() +buttonUp.getWidth()
+                            && y > buttonUp.getY() && y < buttonUp.getY() + buttonUp.getHeight())
+                    {
+                        buttonUp.setPressed(true);
+                    }
+                    else buttonUp.setPressed(false);
+                    if (x > buttonDown.getX() && x < buttonDown.getX() +buttonDown.getWidth()
+                            && y > buttonDown.getY() && y < buttonDown.getY() + buttonDown.getHeight())
+                    {
+                        buttonDown.setPressed(true);
+                    }
+                    else buttonDown.setPressed(false);
+                break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
-                if (x > buttonRight.getX() && x < buttonRight.getX() +buttonRight.getWidth()
-                        && y > buttonRight.getY() && y < buttonRight.getY() + buttonRight.getHeight())
-                {
-                    player.setMoveE(false);
-                    buttonRight.setPressed(false);
-                }
-                else
-                if (x > buttonLeft.getX() && x < buttonLeft.getX() +buttonLeft.getWidth()
-                        && y > buttonLeft.getY() && y < buttonLeft.getY() + buttonLeft.getHeight())
-                {
-                    player.setMoveW(false);
-                    buttonLeft.setPressed(false);
-                }
-                else
-                if (x > buttonUp.getX() && x < buttonUp.getX() +buttonUp.getWidth()
-                        && y > buttonUp.getY() && y < buttonUp.getY() + buttonUp.getHeight())
-                {
-                    player.setMoveN(false);
-                    buttonUp.setPressed(false);
-                }
-                else
-                if (x > buttonDown.getX() && x < buttonDown.getX() +buttonDown.getWidth()
-                        && y > buttonDown.getY() && y < buttonDown.getY() + buttonDown.getHeight())
-                {
-                    player.setMoveS(false);
-                    buttonDown.setPressed(false);
-                }
+
+                buttonUp.setPressed(false);
+                buttonDown.setPressed(false);
+                buttonLeft.setPressed(false);
+                buttonRight.setPressed(false);
+
                 break;
 
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
-
+                buttonUp.setPressed(false);
                 buttonDown.setPressed(false);
                 buttonLeft.setPressed(false);
                 buttonRight.setPressed(false);
-                buttonUp.setPressed(false);
-                player.setMoveS(false);
-                player.setMoveN(false);
-                player.setMoveE(false);
-                player.setMoveW(false);
                 break;
 
         }
-        //System.out.println(player.getX()+":"+player.getY());
+    }
+
+    public SteeringButton getButtonLeft() {
+        return buttonLeft;
+    }
+
+    public void setButtonLeft(SteeringButton buttonLeft) {
+        this.buttonLeft = buttonLeft;
+    }
+
+    public SteeringButton getButtonRight() {
+        return buttonRight;
+    }
+
+    public void setButtonRight(SteeringButton buttonRight) {
+        this.buttonRight = buttonRight;
+    }
+
+    public SteeringButton getButtonUp() {
+        return buttonUp;
+    }
+
+    public void setButtonUp(SteeringButton buttonUp) {
+        this.buttonUp = buttonUp;
+    }
+
+    public SteeringButton getButtonDown() {
+        return buttonDown;
+    }
+
+    public void setButtonDown(SteeringButton buttonDown) {
+        this.buttonDown = buttonDown;
     }
 }
