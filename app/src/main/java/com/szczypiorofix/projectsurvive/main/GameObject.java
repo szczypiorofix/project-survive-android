@@ -4,41 +4,35 @@ package com.szczypiorofix.projectsurvive.main;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public abstract class GameObject {
+public interface GameObject {
 
-    public abstract void render(Canvas canvas);
-    public abstract void tick(LinkedList<GameObject> objects);
-    public abstract Rect getBounds();
+    void render(Canvas canvas);
+    void tick(ArrayList<GameObject> objects);
+    Rect getBounds();
 
-    public abstract boolean isVisible();
-    public abstract void setVisible(boolean visible);
+    float getX();
+    void setX(float x);
 
-    public abstract float getX();
-    public abstract void setX(float x);
+    float getY();
+    void setY(float y);
 
-    public abstract float getY();
-    public abstract void setY(float y);
+    int getWidth();
+    void setWidth(int width);
 
-    public abstract float getWidth();
-    public abstract void setWidth(float width);
+    int getHeight();
+    void setHeight(int height);
 
-    public abstract float getHeight();
-    public abstract void setHeight(float height);
+    float getVelX();
+    void setVelX(float velX);
 
-    public abstract float getVelX();
-    public abstract void setVelX(float velX);
+    float getVelY();
+    void setVelY(float velY);
 
-    public abstract float getVelY();
-    public abstract void setVelY(float velY);
+    boolean isAction();
+    void setAction(boolean action);
 
-    public abstract boolean isAction();
-    public abstract void setAction(boolean action);
-
-    public abstract boolean canFall();
-    public abstract void setCanFall(boolean canFall);
-
-    public abstract Direction getDirection();
-    public abstract void setDirection(Direction direction);
+    Direction getDirection();
+    void setDirection(Direction direction);
 }

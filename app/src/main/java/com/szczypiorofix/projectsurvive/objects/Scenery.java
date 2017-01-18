@@ -7,15 +7,14 @@ import android.graphics.Rect;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
-public class Scenery extends GameObject {
+public class Scenery implements GameObject {
 
     private float x, y;
     private Bitmap bitmap;
-    private boolean visible;
-    private float width, height;
+    private int width, height;
 
 
     public Scenery(Bitmap bitmap, float x, float y) {
@@ -24,7 +23,6 @@ public class Scenery extends GameObject {
         this.height = this.bitmap.getHeight();
         this.x = x;
         this.y = y;
-        visible = true;
     }
 
 
@@ -34,23 +32,13 @@ public class Scenery extends GameObject {
     }
 
     @Override
-    public void tick(LinkedList<GameObject> objects) {
+    public void tick(ArrayList<GameObject> objects) {
 
     }
 
     @Override
     public Rect getBounds() {
         return null;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     @Override
@@ -74,22 +62,22 @@ public class Scenery extends GameObject {
     }
 
     @Override
-    public float getWidth() {
+    public int getWidth() {
         return width;
     }
 
     @Override
-    public void setWidth(float width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
     @Override
-    public float getHeight() {
+    public int getHeight() {
         return height;
     }
 
     @Override
-    public void setHeight(float height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -100,7 +88,6 @@ public class Scenery extends GameObject {
 
     @Override
     public void setVelX(float velX) {
-
     }
 
     @Override
@@ -110,7 +97,6 @@ public class Scenery extends GameObject {
 
     @Override
     public void setVelY(float velY) {
-
     }
 
     @Override
@@ -120,17 +106,6 @@ public class Scenery extends GameObject {
 
     @Override
     public void setAction(boolean action) {
-
-    }
-
-    @Override
-    public boolean canFall() {
-        return false;
-    }
-
-    @Override
-    public void setCanFall(boolean canFall) {
-
     }
 
     @Override

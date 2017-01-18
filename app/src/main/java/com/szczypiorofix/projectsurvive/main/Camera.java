@@ -7,7 +7,6 @@ public class Camera {
     private float width, height;
     private float meshScale;
 
-
     public Camera(float x, float y, float width, float height, float meshScale)
     {
         this.x = x;
@@ -19,10 +18,9 @@ public class Camera {
 
     public void tick(GameObject player)
     {
-        x = -player.getX() + (width/2);
-        y = -player.getY() + (height/2);
+        x = -player.getX() + (width/2) - (player.getWidth()/2);
+        y = -player.getY() + (height/2) - (player.getHeight()/2);
     }
-
 
     public float getX() {
         return x;

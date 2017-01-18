@@ -2,32 +2,29 @@ package com.szczypiorofix.projectsurvive.objects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.szczypiorofix.projectsurvive.R;
 import com.szczypiorofix.projectsurvive.graphics.Textures;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
 import com.szczypiorofix.projectsurvive.main.ObjectsManager;
 
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
 
-public class Player extends GameObject {
+public class Player implements GameObject {
 
     private float meshScale;
     private ObjectsManager objectsManager;
     private float x, y;
-    private float width, height;
+    private int width, height;
     private boolean action;
     private Direction direction;
     private float MAX_SPEED;
-    private boolean visible;
     private boolean canFall;
     private float velX, velY;
     private Bitmap image;
@@ -41,15 +38,16 @@ public class Player extends GameObject {
         this.y = y;
         velX = 0;
         velY = 0;
-        visible = true;
         MAX_SPEED = meshScale / 10;
         direction = Direction.SOUTH;
         image = Textures.getInstance(context, meshScale).idlePlayerL[0];
+        width = image.getWidth();
+        height = image.getHeight();
     }
 
 
     @Override
-    public void tick(LinkedList<GameObject> objects) {
+    public void tick(ArrayList<GameObject> objects) {
 
         x += velX;
         y += velY;
@@ -61,19 +59,9 @@ public class Player extends GameObject {
     }
 
 
-    @Override
+
     public Rect getBounds() {
         return null;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     @Override
@@ -97,22 +85,22 @@ public class Player extends GameObject {
     }
 
     @Override
-    public float getWidth() {
+    public int getWidth() {
         return width;
     }
 
     @Override
-    public void setWidth(float width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
     @Override
-    public float getHeight() {
+    public int getHeight() {
         return height;
     }
 
     @Override
-    public void setHeight(float height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
@@ -147,16 +135,6 @@ public class Player extends GameObject {
     }
 
     @Override
-    public boolean canFall() {
-        return canFall;
-    }
-
-    @Override
-    public void setCanFall(boolean canFall) {
-        this.canFall = canFall;
-    }
-
-    @Override
     public Direction getDirection() {
         return direction;
     }
@@ -164,6 +142,14 @@ public class Player extends GameObject {
     @Override
     public void setDirection(Direction direction) {
         this.direction = direction;
+    }
+
+    public int getTileX() {
+        return (int) (x / meshScale);
+    }
+
+    public int getTileY() {
+        return (int) (y / meshScale);
     }
 
     public void setMoveW(boolean move) {

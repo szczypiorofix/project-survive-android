@@ -3,7 +3,6 @@ package com.szczypiorofix.projectsurvive.main;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,10 +16,6 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
     private boolean isRunning = false;
     private Thread gameThread;
     private SurfaceHolder holder;
-    private int screenWidth;
-    private int screenHeight;
-    private int width, height;
-    private float fps_count, ticks_count;
     private InputController inputController;
     private ObjectsManager objectsManager;
     private Camera camera;
@@ -34,16 +29,13 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
     public GameManager(Context context, int width, int height, float meshScale) {
         super(context);
 
-        this.width = width;
-        this.height = height;
-
         holder = getHolder();
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
 
         camera = new Camera(0, 0, width, height, meshScale);
 
-        objectsManager = new ObjectsManager(context, meshScale, camera, width, height);
+        objectsManager = new ObjectsManager(context, meshScale);
         objectsManager.loadLevel(1);
 
         player = objectsManager.getPlayer();
@@ -68,23 +60,24 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         if (inputController.getButtonLeft().isPressed()) player.setMoveW(true);
         if (inputController.getButtonRight().isPressed()) player.setMoveE(true);
 
-
         objectsManager.tick();
         camera.tick(player);
     }
 
     void render(Canvas canvas) {
         canvas.drawColor(Color.BLACK);
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
 
         canvas.translate(camera.getX(), camera.getY());
         objectsManager.render(canvas);
         canvas.translate(-camera.getX(), -camera.getY());
 
+
         inputController.drawButtons(canvas);
-        canvas.drawText("FPS: "+fps_count, 10, 20, paint);
-        canvas.drawText("UPS: "+ticks_count, 10, 40, paint);
+
+        //paint = new Paint();
+        //paint.setColor(Color.WHITE);
+        //canvas.drawText("FPS: "+fps_count, 10, 20, paint);
+        //canvas.drawText("UPS: "+ticks_count, 10, 40, paint);
     }
 
 
@@ -113,8 +106,6 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        screenWidth = width;
-        screenHeight = height;
     }
 
     @Override
@@ -130,6 +121,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         int updates = 0;
         int frames = 0;
         Canvas canvas;
+        float fps_count, ticks_count;
 
         while(isRunning)
         {
@@ -158,7 +150,6 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
             }
 **/
 
-
             double ns = 1000000000 / amountOfTicks;
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
@@ -182,7 +173,6 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
 
                 // DRAW METHOD
                 render(canvas);
-
                 holder.unlockCanvasAndPost(canvas);
             }
             frames++;
@@ -192,6 +182,9 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
                 timer += 1000;
                 fps_count = frames;
                 ticks_count = updates;
+
+                System.out.println("UPS: "+ticks_count +", FPS: "+fps_count);
+
                 frames = 0;
                 updates = 0;
             }

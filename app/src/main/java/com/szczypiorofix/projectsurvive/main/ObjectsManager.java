@@ -14,34 +14,25 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 
 public class ObjectsManager {
 
 
-    private LinkedList<GameObject> player_List = new LinkedList<>();
-    private LinkedList<GameObject> scemery_List = new LinkedList<>();
+    private ArrayList<GameObject> scemery_List = new ArrayList<>();
     private Context context;
     private float meshScale;
-    private Camera camera;
     private Player player;
-    private int width, height;
     private int tileMapWidth, tileMapHeight;
-    private int tileWidth, tileHeight;
     private int tiles[][];
 
 
 
-
-
-    ObjectsManager(Context context, float meshScale, Camera camera, int width, int height) {
+    ObjectsManager(Context context, float meshScale) {
         this.context = context;
         this.meshScale = meshScale;
-        this.camera = camera;
-        this.width = width;
-        this.height = height;
 
         // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
@@ -73,10 +64,6 @@ public class ObjectsManager {
 
                             tileMapHeight = Integer.valueOf(parser.getAttributeValue(1));
 
-                            tileWidth = Integer.valueOf(parser.getAttributeValue(2));
-
-                            tileHeight = Integer.valueOf(parser.getAttributeValue(3));
-
                             tiles = new int[tileMapWidth][tileMapHeight];
                         }
 
@@ -90,7 +77,7 @@ public class ObjectsManager {
 
                         break;
                     case XmlPullParser.END_TAG:
-                        name = parser.getName();
+                        //name = parser.getName();
                         break;
                 }
                 eventType = parser.next();
@@ -103,49 +90,46 @@ public class ObjectsManager {
     }
 
 
-    private void iteratingTick(LinkedList<GameObject> list)
+    private void iteratingTick(ArrayList<GameObject> list)
     {
-        for (int i = 0; i < list.size(); i++) {
-
-            if ((list.get(i).getX() < -camera.getX()+ width) && (list.get(i).getX() > -camera.getX()-meshScale)
-                && (list.get(i).getY() < - camera.getY() + height) && (list.get(i).getY() > -camera.getY()-meshScale))
-                list.get(i).setVisible(true);
-            else list.get(i).setVisible(false);
-
-            list.get(i).tick(list);
-        }
+        for (int x = -4; x < 6; x++)
+            for (int y = -2; y < 4; y++)
+            {
+                int index = (player.getTileX()+x) * tileMapHeight + (player.getTileY()+y);
+                if (index < 0) System.out.println("Ticks : POZA KRAWĘDZ !!!!");
+                list.get(index).tick(list);
+            }
     }
 
     void tick()
     {
         iteratingTick(scemery_List);
-        iteratingTick(player_List);
+
+        player.tick(null);
     }
 
-    private void iteratingRender(Canvas canvas, LinkedList<GameObject> list)
+    private void iteratingRender(Canvas canvas, ArrayList<GameObject> list)
     {
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).isVisible()) list.get(i).render(canvas);
-        }
+        for (int x = -4; x < 6; x++)
+            for (int y = -2; y < 4; y++)
+            {
+                int index = (player.getTileX()+x) * tileMapHeight + (player.getTileY()+y);
+                if (index < 0) System.out.println("Remder : POZA KRAWĘDZ !!!!");
+                list.get(index).render(canvas);
+            }
     }
 
     void render(Canvas canvas)
     {
         iteratingRender(canvas, scemery_List);
-        iteratingRender(canvas, player_List);
+        player.render(canvas);
     }
 
-    void clearLevel()
-    {
-        camera.setX(0);
-        camera.setY(0);
-        player_List.clear();
-    }
 
-    public void loadLevel(int level_int) {
+    void loadLevel(int level_int) {
 
 
-        System.out.println(tileMapWidth +":" +tileMapHeight);
+        System.out.println("TileMap: " +tileMapWidth +":" +tileMapHeight);
 
         for (int x = 0; x < tileMapWidth; x++) {
             for (int y = 0; y < tileMapHeight; y++) {
@@ -155,18 +139,11 @@ public class ObjectsManager {
             }
         }
 
-        player = new Player(context, 5 * meshScale, 5 * meshScale, meshScale, this);
-        player_List.add(player);
-
-        System.out.println("Lista: "+scemery_List.size());
+        player = new Player(context, 6 * meshScale, 6 * meshScale, meshScale, this);
     }
 
-
-    public Player getPlayer() {
+    Player getPlayer() {
         return player;
     }
 
-    public  LinkedList<GameObject> getScemery_List() {
-        return scemery_List;
-    }
 }
