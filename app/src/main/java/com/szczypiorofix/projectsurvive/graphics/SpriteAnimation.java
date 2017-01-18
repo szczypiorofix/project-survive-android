@@ -12,7 +12,7 @@ public class SpriteAnimation {
     private Bitmap[] images;
     private Bitmap currentImage;
 
-    SpriteAnimation(int frameSkip, Bitmap... args)
+    public SpriteAnimation(int frameSkip, Bitmap... args)
     {
         this.frameSkip = frameSkip;
         images = new Bitmap[args.length];
@@ -23,7 +23,7 @@ public class SpriteAnimation {
         maxKlatki = args.length;
     }
 
-    void runAnimation()
+    public void runAnimation()
     {
         index++;
         if (index > frameSkip)
@@ -53,7 +53,7 @@ public class SpriteAnimation {
         if (klatkaAnimacji >= maxKlatki) klatkaAnimacji = 0;
     }
 
-    void drawAnimation(Canvas canvas, int x, int y)
+    public void drawAnimation(Canvas canvas, int x, int y)
     {
         canvas.drawBitmap(currentImage, x, y, null);
     }

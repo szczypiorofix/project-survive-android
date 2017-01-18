@@ -5,14 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import com.szczypiorofix.projectsurvive.graphics.SpriteAnimation;
 import com.szczypiorofix.projectsurvive.graphics.Textures;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
 import com.szczypiorofix.projectsurvive.main.ObjectsManager;
 
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 
 
@@ -25,7 +24,7 @@ public class Player implements GameObject {
     private boolean action;
     private Direction direction;
     private float MAX_SPEED;
-    private boolean canFall;
+    private SpriteAnimation runE, runN, runS, runW;
     private float velX, velY;
     private Bitmap image;
 
@@ -38,9 +37,26 @@ public class Player implements GameObject {
         this.y = y;
         velX = 0;
         velY = 0;
+
+        runE = new SpriteAnimation(4, Textures.getInstance(context, meshScale).runPlayerE[0],
+                Textures.getInstance(context, meshScale).runPlayerE[1],
+                Textures.getInstance(context, meshScale).runPlayerE[2]);
+
+        runW = new SpriteAnimation(4, Textures.getInstance(context, meshScale).runPlayerW[0],
+                Textures.getInstance(context, meshScale).runPlayerW[1],
+                Textures.getInstance(context, meshScale).runPlayerW[2]);
+
+        runN = new SpriteAnimation(4, Textures.getInstance(context, meshScale).runPlayerN[0],
+                Textures.getInstance(context, meshScale).runPlayerN[1],
+                Textures.getInstance(context, meshScale).runPlayerN[2]);
+
+        runS = new SpriteAnimation(4, Textures.getInstance(context, meshScale).runPlayerS[0],
+                Textures.getInstance(context, meshScale).runPlayerS[1],
+                Textures.getInstance(context, meshScale).runPlayerS[2]);
+
+
         MAX_SPEED = meshScale / 10;
         direction = Direction.SOUTH;
-        image = Textures.getInstance(context, meshScale).idlePlayerL[0];
         width = image.getWidth();
         height = image.getHeight();
     }
@@ -51,11 +67,40 @@ public class Player implements GameObject {
 
         x += velX;
         y += velY;
+
+        switch (direction) {
+            case SOUTH:
+                runS.runAnimation();
+                break;
+            case NORTH:
+                runN.runAnimation();
+                break;
+            case EAST:
+                runE.runAnimation();
+                break;
+            case WEST:
+                runW.runAnimation();
+                break;
+         }
     }
 
     @Override
     public void render(Canvas canvas) {
-        canvas.drawBitmap(image, x, y, null);
+
+        switch (direction) {
+            case SOUTH:
+                //runS.drawAnimation(canvas, (int) x, (int) y);
+                break;
+            case NORTH:
+                runS.drawAnimation(canvas, (int) x, (int) y);
+                break;
+            case EAST:
+                runS.drawAnimation(canvas, (int) x, (int) y);
+                break;
+            case WEST:
+                runS.drawAnimation(canvas, (int) x, (int) y);
+                break;
+        }
     }
 
 

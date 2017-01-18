@@ -13,18 +13,21 @@ final public class Textures {
 
     public Bitmap[] groundTiles = new Bitmap[28];
 
-    public Bitmap[] idlePlayerL = new Bitmap[2];
-    public Bitmap[] idlePlayerR = new Bitmap[2];
+    public Bitmap[] runPlayerE = new Bitmap[3];
+    public Bitmap[] runPlayerW = new Bitmap[3];
+    public Bitmap[] runPlayerS = new Bitmap[3];
+    public Bitmap[] runPlayerN = new Bitmap[3];
 
-    public Bitmap[] runPlayerL = new Bitmap[4];
-    public Bitmap[] runPlayerR = new Bitmap[4];
 
     public Bitmap buttonLeftPressedImage, buttonLeftDefaultImage, buttonRightPressedImage, buttonRightDefaultImage, buttonUpPressedImage, buttonUpDefaultImage, buttonDownPressedImage, buttonDownDefaultImage;
-    public Bitmap backgroundImage;
+
+
+    //// LibGDX TUTORIAL !!!! https://www.youtube.com/watch?v=a8MPxzkwBwo&list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt
+
+
+
 
     private Textures(Context context, float meshScale) {
-
-        backgroundImage = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.background_quake),400, 400, false);
 
         // ILOSC TILESOW W RYSUNKU: X i Y
         int tiles_x = 2;
@@ -81,27 +84,27 @@ final public class Textures {
         groundTiles[26] = groundTilesSheet.getSprite(3, 9);
 
 
-        tiles_x = 4;
-        tiles_y = 3;
+        tiles_x = 3;
+        tiles_y = 4;
 
-        Bitmap playerSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.player_16), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
+        Bitmap playerSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.player_new), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet playerSheet = new SpriteSheet(playerSheetBitmap, tiles_x, tiles_y);
 
+        runPlayerN[0] = playerSheet.getSprite(1, 1);
+        runPlayerN[1] = playerSheet.getSprite(1, 1);
+        runPlayerN[2] = playerSheet.getSprite(1, 1);
 
-        runPlayerR[0] = playerSheet.getSprite(1,1);
-        runPlayerR[1] = playerSheet.getSprite(2,1);
-        runPlayerR[2] = playerSheet.getSprite(3,1);
-        runPlayerR[3] = playerSheet.getSprite(4,1);
+        runPlayerE[0] = playerSheet.getSprite(1, 1);
+        runPlayerE[1] = playerSheet.getSprite(1, 1);
+        runPlayerE[2] = playerSheet.getSprite(1, 1);
 
-        runPlayerL[0] = playerSheet.getSprite(1,2);
-        runPlayerL[1] = playerSheet.getSprite(2,2);
-        runPlayerL[2] = playerSheet.getSprite(3,2);
-        runPlayerL[3] = playerSheet.getSprite(4,2);
+        runPlayerW[0] = playerSheet.getSprite(1, 1);
+        runPlayerW[1] = playerSheet.getSprite(1, 1);
+        runPlayerW[2] = playerSheet.getSprite(1, 1);
 
-        idlePlayerR[0] = playerSheet.getSprite(1,3);
-        idlePlayerR[1] = playerSheet.getSprite(2,3);
-        idlePlayerL[0] = playerSheet.getSprite(3,3);
-        idlePlayerL[1] = playerSheet.getSprite(4,3);
+        runPlayerS[0] = playerSheet.getSprite(1, 1);
+        runPlayerS[1] = playerSheet.getSprite(1, 1);
+        runPlayerS[2] = playerSheet.getSprite(1, 1);
     }
 
     public synchronized static Textures getInstance(Context context, float meshScale)
