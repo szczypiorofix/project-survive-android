@@ -24,9 +24,8 @@ public class ObjectsManager {
     private ArrayList<GameObject> scemery_List = new ArrayList<>();
     private Context context;
     private float meshScale;
+    private TileMap level;
     private Player player;
-    private int tileMapWidth, tileMapHeight;
-    private int tiles[][];
 
 
 
@@ -34,59 +33,7 @@ public class ObjectsManager {
         this.context = context;
         this.meshScale = meshScale;
 
-        // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
-        XmlPullParserFactory pullParserFactory;
-        try {
-            pullParserFactory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = pullParserFactory.newPullParser();
-
-            InputStream in_s = context.getApplicationContext().getAssets().open("levels/level1.xml");
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(in_s, null);
-
-            int eventType = parser.getEventType();
-
-            tiles = new int[1][1];
-
-            while (eventType != XmlPullParser.END_DOCUMENT){
-                String name;
-
-                switch (eventType){
-                    case XmlPullParser.START_DOCUMENT:
-                        break;
-                    case XmlPullParser.START_TAG:
-                        name = parser.getName();
-
-                        if (name.equals("tilemap")) {
-
-                            tileMapWidth = Integer.valueOf(parser.getAttributeValue(0));
-
-                            tileMapHeight = Integer.valueOf(parser.getAttributeValue(1));
-
-                            tiles = new int[tileMapWidth][tileMapHeight];
-                        }
-
-                        if (name.equals("tile")) {
-
-                            int x = Integer.valueOf(parser.getAttributeValue(0));
-                            int y = Integer.valueOf(parser.getAttributeValue(1));
-                            int t = Integer.valueOf(parser.getAttributeValue(2));
-                            tiles[x][y] = t;
-                        }
-
-                        break;
-                    case XmlPullParser.END_TAG:
-                        //name = parser.getName();
-                        break;
-                }
-                eventType = parser.next();
-            }
-
-            in_s.close();
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -95,7 +42,7 @@ public class ObjectsManager {
         for (int x = -4; x < 6; x++)
             for (int y = -2; y < 4; y++)
             {
-                int index = (player.getTileX()+x) * tileMapHeight + (player.getTileY()+y);
+                int index = (player.getTileX()+x) * level.getTileMapHeight() + (player.getTileY()+y);
                 if (index < 0) System.out.println("Ticks : POZA KRAWĘDZ !!!!");
                 list.get(index).tick(list);
             }
@@ -113,7 +60,7 @@ public class ObjectsManager {
         for (int x = -4; x < 6; x++)
             for (int y = -2; y < 4; y++)
             {
-                int index = (player.getTileX()+x) * tileMapHeight + (player.getTileY()+y);
+                int index = (player.getTileX()+x) * level.getTileMapHeight() + (player.getTileY()+y);
                 if (index < 0) System.out.println("Remder : POZA KRAWĘDZ !!!!");
                 list.get(index).render(canvas);
             }
@@ -126,21 +73,20 @@ public class ObjectsManager {
     }
 
 
-    void loadLevel(int level_int) {
+    void setLevelToManage(TileMap level) {
+        //System.out.println("TileMap: " +tileMapWidth +":" +tileMapHeight);
 
+        for (int x = 0; x < level.getTileMapWidth(); x++) {
+            for (int y = 0; y < level.getTileMapHeight(); y++) {
 
-        System.out.println("TileMap: " +tileMapWidth +":" +tileMapHeight);
-
-        for (int x = 0; x < tileMapWidth; x++) {
-            for (int y = 0; y < tileMapHeight; y++) {
-
-                int s = tiles[x][y];
+                int s = level.getTile(x, y);
                 scemery_List.add(new Scenery(Textures.getInstance(context, meshScale).groundTiles[s], x * meshScale, y * meshScale));
             }
         }
 
         player = new Player(context, 6 * meshScale, 6 * meshScale, meshScale, this);
     }
+
 
     Player getPlayer() {
         return player;
