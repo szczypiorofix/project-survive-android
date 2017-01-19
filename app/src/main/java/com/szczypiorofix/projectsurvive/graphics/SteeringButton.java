@@ -7,13 +7,12 @@ import android.graphics.Canvas;
 public class SteeringButton {
 
     private int x, y;
-    private Bitmap image_default, image_pressed;
+    private Bitmap image_default;
     private int width, height;
     private boolean pressed;
 
-    public SteeringButton(Bitmap image_default, Bitmap image_pressed, int x, int y) {
+    public SteeringButton(Bitmap image_default, int x, int y) {
         this.image_default = image_default;
-        this.image_pressed = image_pressed;
         this.x = x;
         this.y = y;
         width = image_default.getWidth();
@@ -23,8 +22,7 @@ public class SteeringButton {
 
 
     public void draw(Canvas canvas) {
-        if (pressed) canvas.drawBitmap(image_pressed, x, y, null);
-        else canvas.drawBitmap(image_default, x, y, null);
+        canvas.drawBitmap(image_default, x, y, null);
     }
 
 

@@ -19,6 +19,7 @@ public class Player implements GameObject {
 
     private float meshScale;
     private ObjectsManager objectsManager;
+    private Context context;
     private float x, y;
     private int width, height;
     private boolean action;
@@ -26,11 +27,11 @@ public class Player implements GameObject {
     private float MAX_SPEED;
     private SpriteAnimation runE, runN, runS, runW;
     private float velX, velY;
-    private Bitmap image;
 
 
     public Player(Context context, float x, float y, float meshScale, ObjectsManager objectsManager) {
 
+        this.context = context;
         this.meshScale = meshScale;
         this.objectsManager = objectsManager;
         this.x = x;
@@ -54,11 +55,11 @@ public class Player implements GameObject {
                 Textures.getInstance(context, meshScale).runPlayerS[1],
                 Textures.getInstance(context, meshScale).runPlayerS[2]);
 
-
-        MAX_SPEED = meshScale / 10;
+        MAX_SPEED = meshScale / 25;
         direction = Direction.SOUTH;
-        width = image.getWidth();
-        height = image.getHeight();
+
+        width = Textures.getInstance(context, meshScale).runPlayerE[0].getWidth();
+        height = Textures.getInstance(context, meshScale).runPlayerE[0].getHeight();
     }
 
 
@@ -70,16 +71,28 @@ public class Player implements GameObject {
 
         switch (direction) {
             case SOUTH:
-                runS.runAnimation();
+                if (velY != 0) runS.runAnimation();
+                break;
+            case SOUTHEAST:
+                if (velX != 0) runE.runAnimation();
+                break;
+            case SOUTHWEST:
+                if (velX != 0) runW.runAnimation();
+                break;
+            case NORTHEAST:
+                if (velX != 0) runE.runAnimation();
+                break;
+            case NORTHWEST:
+                if (velX != 0) runW.runAnimation();
                 break;
             case NORTH:
-                runN.runAnimation();
+                if (velY != 0) runN.runAnimation();
                 break;
             case EAST:
-                runE.runAnimation();
+                if (velX != 0) runE.runAnimation();
                 break;
             case WEST:
-                runW.runAnimation();
+                if (velX != 0) runW.runAnimation();
                 break;
          }
     }
@@ -89,16 +102,43 @@ public class Player implements GameObject {
 
         switch (direction) {
             case SOUTH:
-                //runS.drawAnimation(canvas, (int) x, (int) y);
+                if (velY != 0) runS.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerS[0], x, y, null);
                 break;
+
+            case SOUTHEAST:
+                if (velX != 0) runE.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerE[0], x, y, null);
+                break;
+
+            case SOUTHWEST:
+                if (velX != 0) runW.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerW[0], x, y, null);
+                break;
+
             case NORTH:
-                runS.drawAnimation(canvas, (int) x, (int) y);
+                if (velY != 0) runN.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerN[2], x, y, null);
                 break;
+
+            case NORTHEAST:
+                if (velX != 0) runE.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerE[0], x, y, null);
+                break;
+
             case EAST:
-                runS.drawAnimation(canvas, (int) x, (int) y);
+                if (velX != 0) runE.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerE[0], x, y, null);
                 break;
+
             case WEST:
-                runS.drawAnimation(canvas, (int) x, (int) y);
+                if (velX != 0) runW.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerW[0], x, y, null);
+                break;
+
+            case NORTHWEST:
+                if (velX != 0) runW.drawAnimation(canvas, (int) x, (int) y);
+                else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerW[0], x, y, null);
                 break;
         }
     }
@@ -201,6 +241,38 @@ public class Player implements GameObject {
         if (move) {
             velX = -MAX_SPEED;
             direction = Direction.WEST;
+        }
+    }
+
+    public void setMoveNW(boolean move) {
+        if (move) {
+            velX = -MAX_SPEED;
+            velY = -MAX_SPEED;
+            direction = Direction.NORTHWEST;
+        }
+    }
+
+    public void setMoveNE(boolean move) {
+        if (move) {
+            velX = MAX_SPEED;
+            velY = -MAX_SPEED;
+            direction = Direction.NORTHEAST;
+        }
+    }
+
+    public void setMoveSW(boolean move) {
+        if (move) {
+            velX = -MAX_SPEED;
+            velY = MAX_SPEED;
+            direction = Direction.SOUTHWEST;
+        }
+    }
+
+    public void setMoveSE(boolean move) {
+        if (move) {
+            velX = MAX_SPEED;
+            velY = MAX_SPEED;
+            direction = Direction.SOUTHEAST;
         }
     }
 

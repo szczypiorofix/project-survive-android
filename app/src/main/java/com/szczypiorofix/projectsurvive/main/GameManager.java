@@ -43,6 +43,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         System.out.println("Tile size: " +level1.getTileWidth() +":" +level1.getTileHeight());
 
         objectsManager = new ObjectsManager(context, meshScale);
+
         objectsManager.setLevelToManage(level1);
 
         player = objectsManager.getPlayer();
@@ -62,10 +63,14 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         player.setVelX(0);
         player.setVelY(0);
 
-        if (inputController.getButtonUp().isPressed()) player.setMoveN(true);
-        if (inputController.getButtonDown().isPressed()) player.setMoveS(true);
-        if (inputController.getButtonLeft().isPressed()) player.setMoveW(true);
-        if (inputController.getButtonRight().isPressed()) player.setMoveE(true);
+        if (inputController.getButtonN().isPressed()) player.setMoveN(true);
+        if (inputController.getButtonS().isPressed()) player.setMoveS(true);
+        if (inputController.getButtonW().isPressed()) player.setMoveW(true);
+        if (inputController.getButtonE().isPressed()) player.setMoveE(true);
+        if (inputController.getButtonNE().isPressed()) player.setMoveNE(true);
+        if (inputController.getButtonNW().isPressed()) player.setMoveNW(true);
+        if (inputController.getButtonSW().isPressed()) player.setMoveSW(true);
+        if (inputController.getButtonSE().isPressed()) player.setMoveSE(true);
 
         objectsManager.tick();
         camera.tick(player);
@@ -78,13 +83,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         objectsManager.render(canvas);
         canvas.translate(-camera.getX(), -camera.getY());
 
-
         inputController.drawButtons(canvas);
-
-        //paint = new Paint();
-        //paint.setColor(Color.WHITE);
-        //canvas.drawText("FPS: "+fps_count, 10, 20, paint);
-        //canvas.drawText("UPS: "+ticks_count, 10, 40, paint);
     }
 
 
@@ -129,36 +128,14 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         int frames = 0;
         Canvas canvas;
         float fps_count, ticks_count;
+        double ns;
+        long now;
 
         while(isRunning)
         {
-/**
-            if (!holder.getSurface().isValid()) {
-                continue;
-            }
 
-            ticks_count = 1000 / 60;
-            fps_count = 1000 / 60;
-
-            tick();
-            canvas = holder.lockCanvas();
-            if (canvas != null) {
-
-                // DRAW METHOD
-                render(canvas);
-
-                holder.unlockCanvasAndPost(canvas);
-            }
-            try {
-                Thread.sleep(5);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-**/
-
-            double ns = 1000000000 / amountOfTicks;
-            long now = System.nanoTime();
+            ns = 1000000000 / amountOfTicks;
+            now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
 

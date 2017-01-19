@@ -11,7 +11,7 @@ final public class Textures {
 
     private static Textures instance = null;
 
-    public Bitmap[] groundTiles = new Bitmap[28];
+    public Bitmap[] groundTiles = new Bitmap[50];
 
     public Bitmap[] runPlayerE = new Bitmap[3];
     public Bitmap[] runPlayerW = new Bitmap[3];
@@ -19,7 +19,10 @@ final public class Textures {
     public Bitmap[] runPlayerN = new Bitmap[3];
 
 
-    public Bitmap buttonLeftPressedImage, buttonLeftDefaultImage, buttonRightPressedImage, buttonRightDefaultImage, buttonUpPressedImage, buttonUpDefaultImage, buttonDownPressedImage, buttonDownDefaultImage;
+    // STEERING PAD
+    public Bitmap buttonWImage, buttonEImage, buttonNImage, buttonSImage,
+                  buttonNEImage, buttonNWImage, buttonSEImage, buttonSWImage,
+                  buttonCenterImage, stickImage;
 
 
     //// LibGDX TUTORIAL !!!! https://www.youtube.com/watch?v=a8MPxzkwBwo&list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt
@@ -29,28 +32,27 @@ final public class Textures {
 
     private Textures(Context context, float meshScale) {
 
-        // ILOSC TILESOW W RYSUNKU: X i Y
-        int tiles_x = 2;
+        // ILOSC TILESOW NA RYSUNKU: X i Y
+        int tiles_x = 3;
         int tiles_y = 4;
 
-        Bitmap buttonTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.direction_buttons), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
+        Bitmap buttonTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.game_controller), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet buttonTilesSheet = new SpriteSheet(buttonTileSheetBitmap, tiles_x, tiles_y);
 
-        buttonRightDefaultImage = buttonTilesSheet.getSprite(1, 1);
-        buttonRightPressedImage = buttonTilesSheet.getSprite(2, 1);
-        buttonLeftDefaultImage = buttonTilesSheet.getSprite(1, 2);
-        buttonLeftPressedImage = buttonTilesSheet.getSprite(2, 2);
-        buttonUpDefaultImage = buttonTilesSheet.getSprite(1, 3);
-        buttonUpPressedImage = buttonTilesSheet.getSprite(2, 3);
 
-        buttonUpDefaultImage = buttonTilesSheet.getSprite(1, 3);
-        buttonUpPressedImage = buttonTilesSheet.getSprite(2, 3);
-
-        buttonDownDefaultImage = buttonTilesSheet.getSprite(1, 4);
-        buttonDownPressedImage = buttonTilesSheet.getSprite(2, 4);
+        buttonNWImage = buttonTilesSheet.getSprite(1,1);
+        buttonNImage = buttonTilesSheet.getSprite(2, 1);
+        buttonNEImage = buttonTilesSheet.getSprite(3,1);
+        buttonEImage = buttonTilesSheet.getSprite(3, 2);
+        buttonWImage = buttonTilesSheet.getSprite(1, 2);
+        buttonSImage = buttonTilesSheet.getSprite(2, 3);
+        buttonSWImage = buttonTilesSheet.getSprite(1, 3);
+        buttonSEImage = buttonTilesSheet.getSprite(3, 3);
+        buttonCenterImage = buttonTilesSheet.getSprite(2,2);
+        stickImage = buttonTilesSheet.getSprite(1, 4);
 
         tiles_x = 3;
-        tiles_y = 9;
+        tiles_y = 11;
 
         Bitmap groundTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.tiles_16_topdown), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet groundTilesSheet = new SpriteSheet(groundTileSheetBitmap, tiles_x, tiles_y);
@@ -82,29 +84,35 @@ final public class Textures {
         groundTiles[24] = groundTilesSheet.getSprite(1, 9);
         groundTiles[25] = groundTilesSheet.getSprite(2, 9);
         groundTiles[26] = groundTilesSheet.getSprite(3, 9);
+        groundTiles[27] = groundTilesSheet.getSprite(1, 10);
+        groundTiles[28] = groundTilesSheet.getSprite(2, 10);
+        groundTiles[29] = groundTilesSheet.getSprite(3, 10);
+        groundTiles[30] = groundTilesSheet.getSprite(1, 11);
+        groundTiles[31] = groundTilesSheet.getSprite(2, 11);
+        groundTiles[32] = groundTilesSheet.getSprite(3, 11);
 
 
         tiles_x = 3;
         tiles_y = 4;
 
-        Bitmap playerSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.player_new), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
+        Bitmap playerSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.player_16_new), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet playerSheet = new SpriteSheet(playerSheetBitmap, tiles_x, tiles_y);
 
-        runPlayerN[0] = playerSheet.getSprite(1, 1);
-        runPlayerN[1] = playerSheet.getSprite(1, 1);
-        runPlayerN[2] = playerSheet.getSprite(1, 1);
-
-        runPlayerE[0] = playerSheet.getSprite(1, 1);
-        runPlayerE[1] = playerSheet.getSprite(1, 1);
-        runPlayerE[2] = playerSheet.getSprite(1, 1);
-
-        runPlayerW[0] = playerSheet.getSprite(1, 1);
-        runPlayerW[1] = playerSheet.getSprite(1, 1);
-        runPlayerW[2] = playerSheet.getSprite(1, 1);
-
         runPlayerS[0] = playerSheet.getSprite(1, 1);
-        runPlayerS[1] = playerSheet.getSprite(1, 1);
-        runPlayerS[2] = playerSheet.getSprite(1, 1);
+        runPlayerS[1] = playerSheet.getSprite(2, 1);
+        runPlayerS[2] = playerSheet.getSprite(3, 1);
+
+        runPlayerN[0] = playerSheet.getSprite(1, 2);
+        runPlayerN[1] = playerSheet.getSprite(2, 2);
+        runPlayerN[2] = playerSheet.getSprite(3, 2);
+
+        runPlayerE[0] = playerSheet.getSprite(1, 3);
+        runPlayerE[1] = playerSheet.getSprite(2, 3);
+        runPlayerE[2] = playerSheet.getSprite(3, 3);
+
+        runPlayerW[0] = playerSheet.getSprite(1, 4);
+        runPlayerW[1] = playerSheet.getSprite(2, 4);
+        runPlayerW[2] = playerSheet.getSprite(3, 4);
     }
 
     public synchronized static Textures getInstance(Context context, float meshScale)
