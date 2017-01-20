@@ -9,23 +9,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+
 
 public class TileMap {
 
     private int level;
-    private int layers;
     private int tileMapWidth, tileMapHeight;
     private int tileWidth, tileHeight;
     private int groundTiles[][];
     private int collisionTiles[][];
-    private int currentLayer;
 
 
     public TileMap(Context context, int level) {
 
         this.level = level;
-        layers = 0;
+
         // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
         XmlPullParserFactory pullParserFactory;
@@ -43,36 +41,51 @@ public class TileMap {
             collisionTiles = new int[1][1];
 
             int x = 0, y = 0, t = 0;
+            int currentLayer = -1;
+            boolean once = false;
 
             while (eventType != XmlPullParser.END_DOCUMENT){
 
-                String name = "";
+                if(eventType == XmlPullParser.START_TAG) {
+                    if (parser.getName().equals("tilemap")) {
 
-                switch (eventType){
-                    case XmlPullParser.START_DOCUMENT:
-                        //countries = new ArrayList();
-                        break;
-                    case XmlPullParser.START_TAG:
-                        name = parser.getName();
-                        //if (name.equals("country")){
-                            //country = new Country();
-                            //country.id=parser.getAttributeValue(null,"id");
-                        //} else if (country != null){
-                            //if (name.equals("name")){
-                                //country.name = parser.nextText();
-                            //} else if (name.equals("capital")){
-                                //country.capital = parser.nextText();
-                            //}
-                        //}
-                        break;
-                    case XmlPullParser.END_TAG:
-                        name = parser.getName();
-                        //if (name.equalsIgnoreCase("country") && country != null){
-                            //ountries.add(country);
-                        //}
+                        tileMapWidth = Integer.parseInt(parser.getAttributeValue(0));
+                        tileMapHeight = Integer.parseInt(parser.getAttributeValue(1));
+                        tileWidth = Integer.parseInt(parser.getAttributeValue(2));
+                        tileHeight = Integer.parseInt(parser.getAttributeValue(3));
+                        groundTiles = new int[tileMapWidth][tileMapHeight];
+                        collisionTiles = new int[tileMapWidth][tileMapHeight];
+                    }
+
+                    if (parser.getName().equals("layer")) {
+                        currentLayer = Integer.parseInt(parser.getAttributeValue(0));
+                    }
+
+                    if (parser.getName().equals("tile")) {
+                        if (currentLayer == 0) {
+
+                            x = Integer.parseInt(parser.getAttributeValue(0));
+                            y = Integer.parseInt(parser.getAttributeValue(1));
+                            t = Integer.parseInt(parser.getAttributeValue(2));
+                            collisionTiles[x][y] = t;
+                        }
+                        if (currentLayer == 1) {
+                            if (!once) {
+                                once = true;
+                                groundTiles = new int[tileMapWidth][tileMapHeight];
+                            }
+                            x = Integer.parseInt(parser.getAttributeValue(0));
+                            y = Integer.parseInt(parser.getAttributeValue(1));
+                            t = Integer.parseInt(parser.getAttributeValue(2));
+                            groundTiles[x][y] = t;
+                        }
+                    }
                 }
+
                 eventType = parser.next();
             }
+
+            System.out.println("Map: "+tileMapWidth +":" +tileMapHeight +"   "+tileWidth+":" +tileHeight);
 
             in_s.close();
         } catch (XmlPullParserException | IOException e) {
@@ -95,6 +108,10 @@ public class TileMap {
 
     public int[][] getCollisionTiles() {
         return collisionTiles;
+    }
+
+    public int[][] getGroundTiles() {
+        return groundTiles;
     }
 
     public int getTileWidth() {

@@ -20,7 +20,6 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
     private ObjectsManager objectsManager;
     private Camera camera;
     private Player player;
-    private TileMap level1;
 
 
     public GameManager(Context context) {
@@ -34,19 +33,20 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
 
-        camera = new Camera(0, 0, width, height, meshScale);
+        camera = new Camera(0, 0, width, height);
 
-        level1 = new TileMap(context, 1);
+        TileMap level1 = new TileMap(context, 1);
 
         System.out.println("Level "+level1.getLevel()+" loaded successfuly.");
         System.out.println("TileMap size "+level1.getTileMapWidth() +":" +level1.getTileMapHeight());
         System.out.println("Tile size: " +level1.getTileWidth() +":" +level1.getTileHeight());
 
-        objectsManager = new ObjectsManager(context, meshScale);
+        objectsManager = new ObjectsManager(context, meshScale, width, height);
 
         objectsManager.setLevelToManage(level1);
 
         player = objectsManager.getPlayer();
+
         player.setCurrentLevel(level1);
 
         inputController = new InputController(height, meshScale, context);

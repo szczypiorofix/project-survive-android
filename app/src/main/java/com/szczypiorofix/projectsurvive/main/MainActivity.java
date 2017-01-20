@@ -11,7 +11,8 @@ public class MainActivity extends Activity {
 
 
     private GameManager gameManager;
-    private final int TILES_ON_HEIGHT = 5;
+    public static final int TILES_ON_HEIGHT = 5;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

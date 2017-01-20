@@ -1,8 +1,9 @@
 package com.szczypiorofix.projectsurvive.objects;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.szczypiorofix.projectsurvive.graphics.SpriteAnimation;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 
 
-public class Player implements GameObject {
+public class Player extends GameObject {
 
     private float meshScale;
     private ObjectsManager objectsManager;
@@ -28,19 +29,29 @@ public class Player implements GameObject {
     private float MAX_SPEED;
     private SpriteAnimation runE, runN, runS, runW;
     private float velX, velY;
-    private TileMap curremtLevel;
+    private TileMap currentLevel;
     private int[][] collisions;
+    private boolean collide;
+    private int index;
+    private Rect bounds, boundsTop, boundsLeft, boundsRight, boundsWhole;
 
 
-    public Player(Context context, float x, float y, float meshScale, ObjectsManager objectsManager) {
+    public Player(Context context, float x, float y, float meshScale, ObjectsManager objectsManager, int index) {
 
         this.context = context;
         this.meshScale = meshScale;
         this.objectsManager = objectsManager;
         this.x = x;
         this.y = y;
+        this.index = index;
         velX = 0;
         velY = 0;
+
+        bounds = new Rect(0, 0 ,0 ,0);
+        boundsTop = new Rect(0, 0 ,0 ,0);
+        boundsLeft = new Rect(0, 0 ,0 ,0);
+        boundsRight = new Rect(0, 0 ,0 ,0);
+        boundsWhole = new Rect(0, 0 ,0 ,0);
 
         runE = new SpriteAnimation(4, Textures.getInstance(context, meshScale).runPlayerE[0],
                 Textures.getInstance(context, meshScale).runPlayerE[1],
@@ -61,8 +72,10 @@ public class Player implements GameObject {
         MAX_SPEED = meshScale / 25;
         direction = Direction.SOUTH;
 
-        width = Textures.getInstance(context, meshScale).runPlayerE[0].getWidth();
-        height = Textures.getInstance(context, meshScale).runPlayerE[0].getHeight();
+        collide = false;
+
+        width = (int) meshScale;
+        height = (int) meshScale;
     }
 
 
@@ -99,14 +112,50 @@ public class Player implements GameObject {
                 break;
          }
 
+        // BOUNDS UPDATE
+        bounds.left = (int) x;
+        bounds.top = (int) (y + height - 10);
+        bounds.right = (int) (x + width);
+        bounds.bottom = (int) (y + height + 5);
+
+        boundsTop.left = (int) x;
+        boundsTop.top = (int) (y - 5);
+        boundsTop.right = (int) (x + width);
+        boundsTop.bottom = (int) (y + (10));
+
+        boundsLeft.left = (int) (x - 5);
+        boundsLeft.top = (int) (y + 10);
+        boundsLeft.right = (int) (x + 10);
+        boundsLeft.bottom = (int) (y + height - 10);
+
+        boundsRight.left = (int) (x + width - 10);
+        boundsRight.top = (int) (y + 10);
+        boundsRight.right = (int) (x + width + 5);
+        boundsRight.bottom = (int) (y + height - 10);
+
+        boundsWhole.left = (int) x;
+        boundsWhole.top = (int) y;
+        boundsWhole.right = (int) (x + width);
+        boundsWhole.bottom = (int) (y + height);
+
+
         manageCollisions();
     }
 
 
     private void manageCollisions() {
 
+        collide = (collisions[getTileX()][getTileY()] == 33);
+
         if (collisions[getTileX()][getTileY()] == 33) {
-            System.out.println("COLLISION !!!");
+
+            int index = (getTileX()) * currentLevel.getTileMapHeight() + getTileY();
+
+            GameObject tempObject = objectsManager.getScenery_List().get(index);
+
+            if (Rect.intersects(getBoundsTop(), tempObject.getBounds())) {
+                System.out.println("INDEX: " +tempObject.getIndex());
+            }
         }
     }
 
@@ -156,12 +205,36 @@ public class Player implements GameObject {
                 else canvas.drawBitmap(Textures.getInstance(context, meshScale).runPlayerW[0], x, y, null);
                 break;
         }
+
+        if (collide) {
+            Paint p = new Paint();
+            p.setStyle(Paint.Style.STROKE);
+            p.setStrokeWidth(3);
+            p.setColor(Color.RED);
+            canvas.drawRect(x, y, x+width, y+height, p);
+        }
     }
 
 
 
     public Rect getBounds() {
-        return null;
+        return bounds;
+    }
+
+    private Rect getBoundsTop() {
+        return boundsTop;
+    }
+
+    private Rect getBoundsRight() {
+        return boundsRight;
+    }
+
+    private Rect getBoundsLeft() {
+        return boundsLeft;
+    }
+
+    private Rect getWholeBounds() {
+        return boundsWhole;
     }
 
     @Override
@@ -244,12 +317,17 @@ public class Player implements GameObject {
         this.direction = direction;
     }
 
+    @Override
+    public int getIndex() {
+        return index;
+    }
+
     public int getTileX() {
-        return (int) (x / meshScale);
+        return (int) ((x + (width/2)) / meshScale);
     }
 
     public int getTileY() {
-        return (int) (y / meshScale);
+        return (int) ((y + height) / meshScale);
     }
 
     public void setMoveW(boolean move) {
@@ -313,8 +391,7 @@ public class Player implements GameObject {
     }
 
     public void setCurrentLevel(TileMap level) {
-        this.curremtLevel = level;
+        this.currentLevel = level;
         collisions = level.getCollisionTiles();
-        System.out.println("LEVEL 1: "+collisions[23][20]);
     }
 }

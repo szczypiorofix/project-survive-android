@@ -6,33 +6,47 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-public interface GameObject {
+public abstract class GameObject {
 
-    void render(Canvas canvas);
-    void tick(ArrayList<GameObject> objects);
-    Rect getBounds();
 
-    float getX();
-    void setX(float x);
 
-    float getY();
-    void setY(float y);
+    public abstract void render(Canvas canvas);
 
-    int getWidth();
-    void setWidth(int width);
+    public abstract void tick(ArrayList<GameObject> objects);
 
-    int getHeight();
-    void setHeight(int height);
+    public abstract Rect getBounds();
 
-    float getVelX();
-    void setVelX(float velX);
+    public abstract float getX();
 
-    float getVelY();
-    void setVelY(float velY);
+    public abstract void setX(float x);
 
-    boolean isAction();
-    void setAction(boolean action);
+    public abstract float getY();
 
-    Direction getDirection();
-    void setDirection(Direction direction);
+    public abstract void setY(float y);
+
+    public abstract int getWidth();
+
+    public abstract void setWidth(int width);
+
+    public abstract int getHeight();
+
+    public abstract void setHeight(int height);
+
+    public abstract float getVelX();
+
+    public abstract void setVelX(float velX);
+
+    public abstract float getVelY();
+
+    public abstract void setVelY(float velY);
+
+    public abstract boolean isAction();
+
+    public abstract void setAction(boolean action);
+
+    public abstract Direction getDirection();
+
+    public abstract void setDirection(Direction direction);
+
+    public abstract int getIndex();
 }

@@ -4,12 +4,12 @@ package com.szczypiorofix.projectsurvive.main;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import com.szczypiorofix.projectsurvive.graphics.SteeringButton;
 import com.szczypiorofix.projectsurvive.graphics.Textures;
 
-import org.w3c.dom.Text;
 
 class InputController {
 
@@ -19,14 +19,18 @@ class InputController {
                            buttonNW, buttonNE, buttonSW, buttonSE ,buttonCenter;
 
     private float stick_x, stick_y;
-    private boolean stick_move;
     private int DEFAULT_STICK_X, DEFAULT_STICK_Y;
+    private Rect touch;
+
+
 
 
     InputController(int screenHeight, float meshScale, Context context) {
 
         this.context = context;
         this.meshScale = meshScale;
+
+        touch = new Rect(0, 0, 10, 10);
 
         Bitmap bitmapDefault = Bitmap.createScaledBitmap(Textures.getInstance(context, meshScale).buttonNWImage, (int) meshScale/2, (int) (meshScale/2), false);
         buttonNW = new SteeringButton(bitmapDefault, (int) meshScale, screenHeight - ((int) (meshScale*1.5)));
@@ -84,142 +88,124 @@ class InputController {
         int x = (int) event.getX(i);
         int y = (int) event.getY(i);
 
+        touch.left = x-10;
+        touch.top = y-10;
+        touch.right = x+10;
+        touch.bottom = y+10;
+
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
 
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_POINTER_DOWN:
 
-                if (x > buttonE.getX() && x < buttonE.getX() + buttonE.getWidth()
-                        && y > buttonE.getY() && y < buttonE.getY() + buttonE.getHeight())
+                if (Rect.intersects(touch, buttonE.getBounds()))
                 {
                     buttonE.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                     break;
                 }
-
-                if (x > buttonNE.getX() && x < buttonNE.getX() + buttonNE.getWidth()
-                        && y > buttonNE.getY() && y < buttonNE.getY() + buttonNE.getHeight())
-                {
-                    buttonNE.setPressed(true);
-                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    break;
-                }
-
-                if (x > buttonNW.getX() && x < buttonNW.getX() + buttonNW.getWidth()
-                        && y > buttonNW.getY() && y < buttonNW.getY() + buttonNW.getHeight())
-                {
-                    buttonNW.setPressed(true);
-                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    break;
-                }
-
-                if (x > buttonSE.getX() && x < buttonSE.getX() + buttonSE.getWidth()
-                        && y > buttonSE.getY() && y < buttonSE.getY() + buttonSE.getHeight())
-                {
-                    buttonSE.setPressed(true);
-                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    break;
-                }
-
-                if (x > buttonSW.getX() && x < buttonSW.getX() + buttonSW.getWidth()
-                        && y > buttonSW.getY() && y < buttonSW.getY() + buttonSW.getHeight())
-                {
-                    buttonSW.setPressed(true);
-                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    break;
-                }
-
-                if (x > buttonW.getX() && x < buttonW.getX() + buttonW.getWidth()
-                        && y > buttonW.getY() && y < buttonW.getY() + buttonW.getHeight())
+                if (Rect.intersects(touch, buttonW.getBounds()))
                 {
                     buttonW.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
 
-                if (x > buttonN.getX() && x < buttonN.getX() + buttonN.getWidth()
-                        && y > buttonN.getY() && y < buttonN.getY() + buttonN.getHeight())
+                if (Rect.intersects(touch, buttonN.getBounds()))
                 {
                     buttonN.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
-
-                if (x > buttonS.getX() && x < buttonS.getX() + buttonS.getWidth()
-                        && y > buttonS.getY() && y < buttonS.getY() + buttonS.getHeight())
+                if (Rect.intersects(touch, buttonS.getBounds()))
                 {
                     buttonS.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
+                if (Rect.intersects(touch, buttonNE.getBounds()))
+                {
+                    buttonNE.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                    break;
+                }
+                if (Rect.intersects(touch, buttonNW.getBounds()))
+                {
+                    buttonNW.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                    break;
+                }
+                if (Rect.intersects(touch, buttonSE.getBounds()))
+                {
+                    buttonSE.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                    break;
+                }
+                if (Rect.intersects(touch, buttonSW.getBounds()))
+                {
+                    buttonSW.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                    break;
+                }
                 break;
 
             case MotionEvent.ACTION_MOVE:
+                if (Rect.intersects(touch, buttonE.getBounds()))
+                {
+                    buttonE.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                }
+                else buttonE.setPressed(false);
+                if (Rect.intersects(touch, buttonW.getBounds()))
+                {
+                    buttonW.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                }
+                else buttonW.setPressed(false);
+                if (Rect.intersects(touch, buttonN.getBounds()))
+                {
+                    buttonN.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                }
+                else buttonN.setPressed(false);
+                if (Rect.intersects(touch, buttonS.getBounds()))
+                {
+                    buttonS.setPressed(true);
+                    stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
+                    stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
+                }
+                else buttonS.setPressed(false);
 
-                    if (x > buttonE.getX() && x < buttonE.getX() + buttonE.getWidth()
-                            && y > buttonE.getY() && y < buttonE.getY() + buttonE.getHeight())
-                    {
-                        buttonE.setPressed(true);
-                        stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                        stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    }
-                    else buttonE.setPressed(false);
-                    if (x > buttonW.getX() && x < buttonW.getX() + buttonW.getWidth()
-                            && y > buttonW.getY() && y < buttonW.getY() + buttonW.getHeight())
-                    {
-                        buttonW.setPressed(true);
-                        stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                        stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    }
-                    else buttonW.setPressed(false);
-                    if (x > buttonN.getX() && x < buttonN.getX() + buttonN.getWidth()
-                            && y > buttonN.getY() && y < buttonN.getY() + buttonN.getHeight())
-                    {
-                        buttonN.setPressed(true);
-                        stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                        stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    }
-                    else buttonN.setPressed(false);
-                    if (x > buttonS.getX() && x < buttonS.getX() + buttonS.getWidth()
-                            && y > buttonS.getY() && y < buttonS.getY() + buttonS.getHeight())
-                    {
-                        buttonS.setPressed(true);
-                        stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
-                        stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
-                    }
-                    else buttonS.setPressed(false);
-
-                if (x > buttonNE.getX() && x < buttonNE.getX() + buttonNE.getWidth()
-                        && y > buttonNE.getY() && y < buttonNE.getY() + buttonNE.getHeight())
+                if (Rect.intersects(touch, buttonNE.getBounds()))
                 {
                     buttonNE.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
                 else buttonNE.setPressed(false);
-                if (x > buttonNW.getX() && x < buttonNW.getX() + buttonNW.getWidth()
-                        && y > buttonNW.getY() && y < buttonNW.getY() + buttonNW.getHeight())
+                if (Rect.intersects(touch, buttonNW.getBounds()))
                 {
                     buttonNW.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
                 else buttonNW.setPressed(false);
-                if (x > buttonSE.getX() && x < buttonSE.getX() + buttonSE.getWidth()
-                        && y > buttonSE.getY() && y < buttonSE.getY() + buttonSE.getHeight())
+                if (Rect.intersects(touch, buttonSE.getBounds()))
                 {
                     buttonSE.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
                     stick_y = y - (Textures.getInstance(context, meshScale).stickImage.getHeight()/2);
                 }
                 else buttonSE.setPressed(false);
-                if (x > buttonSW.getX() && x < buttonSW.getX() + buttonSW.getWidth()
-                        && y > buttonSW.getY() && y < buttonSW.getY() + buttonSW.getHeight())
+                if (Rect.intersects(touch, buttonSW.getBounds()))
                 {
                     buttonSW.setPressed(true);
                     stick_x = x - (Textures.getInstance(context, meshScale).stickImage.getWidth()/2);
@@ -240,7 +226,6 @@ class InputController {
                 buttonSE.setPressed(false);
                 stick_x = DEFAULT_STICK_X;
                 stick_y = DEFAULT_STICK_Y;
-                stick_move = false;
                 break;
 
             case MotionEvent.ACTION_CANCEL:
@@ -255,7 +240,6 @@ class InputController {
                 buttonSE.setPressed(false);
                 stick_x = DEFAULT_STICK_X;
                 stick_y = DEFAULT_STICK_Y;
-                stick_move = false;
                 break;
 
         }

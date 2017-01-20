@@ -10,19 +10,23 @@ import com.szczypiorofix.projectsurvive.main.GameObject;
 import java.util.ArrayList;
 
 
-public class Scenery implements GameObject {
+public class Scenery extends GameObject {
 
     private float x, y;
     private Bitmap bitmap;
     private int width, height;
+    private int id;
+    private Rect bounds;
 
 
-    public Scenery(Bitmap bitmap, float x, float y) {
+    public Scenery(Bitmap bitmap, float x, float y, int id) {
         this.bitmap = bitmap;
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
         this.x = x;
         this.y = y;
+        this.id = id;
+        bounds = new Rect((int) x, (int) y, (int) x+width, (int) y+height);
     }
 
 
@@ -36,9 +40,13 @@ public class Scenery implements GameObject {
 
     }
 
+    public int getIndex() {
+        return id;
+    }
+
     @Override
     public Rect getBounds() {
-        return null;
+        return bounds;
     }
 
     @Override
