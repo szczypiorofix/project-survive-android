@@ -39,7 +39,6 @@ public class ObjectsManager {
                 if (index < 0) System.out.println("Ticks : POZA KRAWĘDZ !!!!");
                 list.get(index).tick(list);
             }
-
     }
 
     void tick()
@@ -74,10 +73,12 @@ public class ObjectsManager {
         for (int x = 0; x < level.getTileMapWidth(); x++) {
             for (int y = 0; y < level.getTileMapHeight(); y++) {
 
-                int s = level.getTile(x, y);
+                int s = level.getGroundTile(x, y);
+                if (s != -1)
                 scemery_List.add(new Scenery(Textures.getInstance(context, meshScale).groundTiles[s], x * meshScale, y * meshScale));
             }
         }
+
         player = new Player(context, 20 * meshScale, 20 * meshScale, meshScale, this);
         player_List.add(player);
     }

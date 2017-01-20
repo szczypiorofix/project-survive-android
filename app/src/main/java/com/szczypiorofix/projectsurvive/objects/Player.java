@@ -10,6 +10,7 @@ import com.szczypiorofix.projectsurvive.graphics.Textures;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
 import com.szczypiorofix.projectsurvive.main.ObjectsManager;
+import com.szczypiorofix.projectsurvive.main.TileMap;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class Player implements GameObject {
     private float MAX_SPEED;
     private SpriteAnimation runE, runN, runS, runW;
     private float velX, velY;
+    private TileMap curremtLevel;
+    private int[][] collisions;
 
 
     public Player(Context context, float x, float y, float meshScale, ObjectsManager objectsManager) {
@@ -95,7 +98,19 @@ public class Player implements GameObject {
                 if (velX != 0) runW.runAnimation();
                 break;
          }
+
+        manageCollisions();
     }
+
+
+    private void manageCollisions() {
+
+        if (collisions[getTileX()][getTileY()] == 33) {
+            System.out.println("COLLISION !!!");
+        }
+    }
+
+
 
     @Override
     public void render(Canvas canvas) {
@@ -295,5 +310,11 @@ public class Player implements GameObject {
             velY = MAX_SPEED;
             direction = Direction.SOUTH;
         }
+    }
+
+    public void setCurrentLevel(TileMap level) {
+        this.curremtLevel = level;
+        collisions = level.getCollisionTiles();
+        System.out.println("LEVEL 1: "+collisions[23][20]);
     }
 }

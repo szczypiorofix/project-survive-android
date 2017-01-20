@@ -9,19 +9,23 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
-class TileMap {
+public class TileMap {
 
     private int level;
     private int layers;
     private int tileMapWidth, tileMapHeight;
     private int tileWidth, tileHeight;
-    private int tiles[][];
+    private int groundTiles[][];
+    private int collisionTiles[][];
+    private int currentLayer;
 
 
-    TileMap(Context context, int level) {
+    public TileMap(Context context, int level) {
 
         this.level = level;
+        layers = 0;
         // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
         XmlPullParserFactory pullParserFactory;
@@ -35,39 +39,37 @@ class TileMap {
 
             int eventType = parser.getEventType();
 
-            tiles = new int[1][1];
+            groundTiles = new int[1][1];
+            collisionTiles = new int[1][1];
+
+            int x = 0, y = 0, t = 0;
 
             while (eventType != XmlPullParser.END_DOCUMENT){
-                String name;
+
+                String name = "";
 
                 switch (eventType){
                     case XmlPullParser.START_DOCUMENT:
+                        //countries = new ArrayList();
                         break;
                     case XmlPullParser.START_TAG:
                         name = parser.getName();
-
-                        if (name.equals("tilemap")) {
-
-                            tileMapWidth = Integer.valueOf(parser.getAttributeValue(0));
-                            tileMapHeight = Integer.valueOf(parser.getAttributeValue(1));
-                            tileWidth = Integer.valueOf(parser.getAttributeValue(2));
-                            tileHeight = Integer.valueOf(parser.getAttributeValue(3));
-
-                            tiles = new int[tileMapWidth][tileMapHeight];
-                        }
-
-                        if (name.equals("tile")) {
-
-                            int x = Integer.valueOf(parser.getAttributeValue(0));
-                            int y = Integer.valueOf(parser.getAttributeValue(1));
-                            int t = Integer.valueOf(parser.getAttributeValue(2));
-                            tiles[x][y] = t;
-                        }
-
+                        //if (name.equals("country")){
+                            //country = new Country();
+                            //country.id=parser.getAttributeValue(null,"id");
+                        //} else if (country != null){
+                            //if (name.equals("name")){
+                                //country.name = parser.nextText();
+                            //} else if (name.equals("capital")){
+                                //country.capital = parser.nextText();
+                            //}
+                        //}
                         break;
                     case XmlPullParser.END_TAG:
-                        //name = parser.getName();
-                        break;
+                        name = parser.getName();
+                        //if (name.equalsIgnoreCase("country") && country != null){
+                            //ountries.add(country);
+                        //}
                 }
                 eventType = parser.next();
             }
@@ -78,27 +80,36 @@ class TileMap {
         }
     }
 
-    int getLevel() {
+
+    public int getLevel() {
         return level;
     }
 
-    int getTile(int x, int y) {
-        return tiles[x][y];
+    public int getGroundTile(int x, int y) {
+        return groundTiles[x][y];
     }
 
-    int getTileWidth() {
+    public int getCollisionTile(int x, int y) {
+        return collisionTiles[x][y];
+    }
+
+    public int[][] getCollisionTiles() {
+        return collisionTiles;
+    }
+
+    public int getTileWidth() {
         return tileWidth;
     }
 
-    int getTileHeight() {
+    public int getTileHeight() {
         return tileHeight;
     }
 
-    int getTileMapWidth() {
+    public int getTileMapWidth() {
         return tileMapWidth;
     }
 
-    int getTileMapHeight() {
+    public int getTileMapHeight() {
         return tileMapHeight;
     }
 

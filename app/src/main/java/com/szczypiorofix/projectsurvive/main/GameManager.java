@@ -47,6 +47,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
         objectsManager.setLevelToManage(level1);
 
         player = objectsManager.getPlayer();
+        player.setCurrentLevel(level1);
 
         inputController = new InputController(height, meshScale, context);
     }
