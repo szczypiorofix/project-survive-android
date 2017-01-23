@@ -9,10 +9,9 @@ import java.util.ArrayList;
 public abstract class GameObject {
 
 
-
     public abstract void render(Canvas canvas);
 
-    public abstract void tick(ArrayList<GameObject> objects);
+    public abstract void tick();
 
     public abstract Rect getBounds();
 
@@ -24,13 +23,13 @@ public abstract class GameObject {
 
     public abstract void setY(float y);
 
-    public abstract int getWidth();
+    public abstract float getWidth();
 
-    public abstract void setWidth(int width);
+    public abstract void setWidth(float width);
 
-    public abstract int getHeight();
+    public abstract float getHeight();
 
-    public abstract void setHeight(int height);
+    public abstract void setHeight(float height);
 
     public abstract float getVelX();
 

@@ -13,6 +13,8 @@ import java.io.InputStream;
 
 public class TileMap {
 
+    public final static int COLLISION_TILE = 33;
+    public final static int PLAYER_TILE = 34;
     private int level;
     private int tileMapWidth, tileMapHeight;
     private int tileWidth, tileHeight;
@@ -23,8 +25,6 @@ public class TileMap {
     public TileMap(Context context, int level) {
 
         this.level = level;
-
-        // http://theopentutorials.com/tutorials/android/xml/android-simple-xmlpullparser-tutorial/
 
         XmlPullParserFactory pullParserFactory;
         try {
@@ -40,7 +40,7 @@ public class TileMap {
             groundTiles = new int[1][1];
             collisionTiles = new int[1][1];
 
-            int x = 0, y = 0, t = 0;
+            int x, y, t;
             int currentLayer = -1;
             boolean once = false;
 

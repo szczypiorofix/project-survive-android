@@ -7,14 +7,13 @@ import android.graphics.Rect;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
 
-import java.util.ArrayList;
 
 
 public class Scenery extends GameObject {
 
     private float x, y;
     private Bitmap bitmap;
-    private int width, height;
+    private float width, height;
     private int id;
     private Rect bounds;
 
@@ -26,7 +25,7 @@ public class Scenery extends GameObject {
         this.x = x;
         this.y = y;
         this.id = id;
-        bounds = new Rect((int) x, (int) y, (int) x+width, (int) y+height);
+        bounds = new Rect((int) x, (int) y, (int) (x+width), (int) (y+height));
     }
 
 
@@ -36,7 +35,7 @@ public class Scenery extends GameObject {
     }
 
     @Override
-    public void tick(ArrayList<GameObject> objects) {
+    public void tick() {
 
     }
 
@@ -70,22 +69,22 @@ public class Scenery extends GameObject {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
     @Override
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 

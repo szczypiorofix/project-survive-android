@@ -10,10 +10,9 @@ import com.szczypiorofix.projectsurvive.graphics.SpriteAnimation;
 import com.szczypiorofix.projectsurvive.graphics.Textures;
 import com.szczypiorofix.projectsurvive.main.Direction;
 import com.szczypiorofix.projectsurvive.main.GameObject;
+import com.szczypiorofix.projectsurvive.main.MainActivity;
 import com.szczypiorofix.projectsurvive.main.ObjectsManager;
 import com.szczypiorofix.projectsurvive.main.TileMap;
-
-import java.util.ArrayList;
 
 
 
@@ -23,7 +22,7 @@ public class Player extends GameObject {
     private ObjectsManager objectsManager;
     private Context context;
     private float x, y;
-    private int width, height;
+    private float width, height;
     private boolean action;
     private Direction direction;
     private float MAX_SPEED;
@@ -80,10 +79,21 @@ public class Player extends GameObject {
 
 
     @Override
-    public void tick(ArrayList<GameObject> objects) {
+    public void tick() {
 
         x += velX;
         y += velY;
+
+
+        // ZABEZPIECZNIENIE PRZED WYCHODZNIEM POZA EKRAN
+
+        if (getTileX(-3) == -1 || getTileX(0) > currentLevel.getTileMapWidth()-objectsManager.getTilesOnWidth())
+            x -= velX;
+
+        if (getTileY(-3) == -1 || getTileY(0) > currentLevel.getTileMapHeight()-objectsManager.getTilesOnHeight() +5)
+            y -= velY;
+
+
 
         switch (direction) {
             case SOUTH:
@@ -114,30 +124,29 @@ public class Player extends GameObject {
 
         // BOUNDS UPDATE
         bounds.left = (int) x;
-        bounds.top = (int) (y + height - 10);
+        bounds.top = (int) (y + height - (height/15));
         bounds.right = (int) (x + width);
-        bounds.bottom = (int) (y + height + 5);
+        bounds.bottom = (int) (y + height + (height/15));
 
         boundsTop.left = (int) x;
-        boundsTop.top = (int) (y - 5);
+        boundsTop.top = (int) (y - (height/15));
         boundsTop.right = (int) (x + width);
-        boundsTop.bottom = (int) (y + (10));
+        boundsTop.bottom = (int) (y + (height/15));
 
-        boundsLeft.left = (int) (x - 5);
-        boundsLeft.top = (int) (y + 10);
-        boundsLeft.right = (int) (x + 10);
-        boundsLeft.bottom = (int) (y + height - 10);
+        boundsLeft.left = (int) (x - (width/15));
+        boundsLeft.top = (int) (y + (height/20));
+        boundsLeft.right = (int) (x + (width/15));
+        boundsLeft.bottom = (int) (y + height - (height/20));
 
-        boundsRight.left = (int) (x + width - 10);
-        boundsRight.top = (int) (y + 10);
-        boundsRight.right = (int) (x + width + 5);
-        boundsRight.bottom = (int) (y + height - 10);
+        boundsRight.left = (int) (x + width - (width/15));
+        boundsRight.top = (int) (y + (height/20));
+        boundsRight.right = (int) (x + width + (width/15));
+        boundsRight.bottom = (int) (y + height - (height/20));
 
         boundsWhole.left = (int) x;
         boundsWhole.top = (int) y;
         boundsWhole.right = (int) (x + width);
         boundsWhole.bottom = (int) (y + height);
-
 
         manageCollisions();
     }
@@ -145,18 +154,22 @@ public class Player extends GameObject {
 
     private void manageCollisions() {
 
-        collide = (collisions[getTileX()][getTileY()] == 33);
+        collide = (collisions[getTileX(0)][getTileY(0)] == TileMap.COLLISION_TILE);
 
-        if (collisions[getTileX()][getTileY()] == 33) {
+        int index = collisions[getTileX(0)][getTileY(0)];
 
-            int index = (getTileX()) * currentLevel.getTileMapHeight() + getTileY();
-
-            GameObject tempObject = objectsManager.getScenery_List().get(index);
-
-            if (Rect.intersects(getBoundsTop(), tempObject.getBounds())) {
-                System.out.println("INDEX: " +tempObject.getIndex());
-            }
+        if (index == TileMap.COLLISION_TILE) {
+            if (velX > 0) x = x - MAX_SPEED;
+            if (velX < 0) x = x + MAX_SPEED;
+            if (velY > 0) y = y - MAX_SPEED;
+            if (velY < 0) y = y + MAX_SPEED;
         }
+
+
+
+        //if (Rect.intersects(getBoundsRight(), objectRight.getBounds())) {
+        //    x = objectRight.getX() - (objectRight.getWidth());
+        //}
     }
 
 
@@ -206,13 +219,16 @@ public class Player extends GameObject {
                 break;
         }
 
-        if (collide) {
-            Paint p = new Paint();
-            p.setStyle(Paint.Style.STROKE);
-            p.setStrokeWidth(3);
-            p.setColor(Color.RED);
-            canvas.drawRect(x, y, x+width, y+height, p);
-        }
+        //if (collide) {
+        Paint p = new Paint();
+        p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(1);
+        p.setColor(Color.RED);
+        canvas.drawRect(getBoundsRight(), p);
+        canvas.drawRect(getBoundsLeft(), p);
+        canvas.drawRect(getBoundsTop(), p);
+        canvas.drawRect(getBounds(), p);
+        //}
     }
 
 
@@ -258,22 +274,22 @@ public class Player extends GameObject {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return width;
     }
 
     @Override
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return height;
     }
 
     @Override
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
@@ -322,12 +338,12 @@ public class Player extends GameObject {
         return index;
     }
 
-    public int getTileX() {
-        return (int) ((x + (width/2)) / meshScale);
+    public int getTileX(int offset) {
+        return ((int) ((x + (width/2)) / meshScale)) +offset;
     }
 
-    public int getTileY() {
-        return (int) ((y + height) / meshScale);
+    public int getTileY(int offset) {
+        return ((int) ((y + (height/2)) / meshScale)) + offset;
     }
 
     public void setMoveW(boolean move) {
