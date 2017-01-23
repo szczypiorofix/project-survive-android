@@ -90,6 +90,9 @@ final public class Textures {
         groundTiles[30] = groundTilesSheet.getSprite(1, 11);
         groundTiles[31] = groundTilesSheet.getSprite(2, 11);
         groundTiles[32] = groundTilesSheet.getSprite(3, 11);
+        groundTiles[33] = groundTilesSheet.getSprite(1, 12);
+        groundTiles[34] = groundTilesSheet.getSprite(2, 12);
+        groundTiles[35] = groundTilesSheet.getSprite(3, 12);
 
 
         tiles_x = 3;
