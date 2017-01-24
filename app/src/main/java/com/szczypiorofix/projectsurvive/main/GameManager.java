@@ -152,8 +152,9 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
             canvas = holder.lockCanvas();
             if (canvas != null) {
 
-                // DRAW METHOD
+                // DRAW
                 render(canvas);
+
                 holder.unlockCanvasAndPost(canvas);
             }
             frames++;
@@ -165,7 +166,7 @@ public class GameManager extends SurfaceView implements Runnable, SurfaceHolder.
                 ticks_count = updates;
 
                 //System.out.println("UPS: "+ticks_count +", FPS: "+fps_count);
-                System.out.println("TILE: " +player.getTileX(0) +":" +player.getTileY(0));
+                //System.out.println("TILE: " +player.getTileX(0) +":" +player.getTileY(0));
                 frames = 0;
                 updates = 0;
             }
