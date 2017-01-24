@@ -52,7 +52,7 @@ final public class Textures {
         stickImage = buttonTilesSheet.getSprite(1, 4);
 
         tiles_x = 3;
-        tiles_y = 12;
+        tiles_y = 13;
 
         Bitmap groundTileSheetBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.tiles_16_topdown), (int) meshScale * tiles_x, (int) meshScale * tiles_y, false);
         SpriteSheet groundTilesSheet = new SpriteSheet(groundTileSheetBitmap, tiles_x, tiles_y);
@@ -93,6 +93,9 @@ final public class Textures {
         groundTiles[33] = groundTilesSheet.getSprite(1, 12);
         groundTiles[34] = groundTilesSheet.getSprite(2, 12);
         groundTiles[35] = groundTilesSheet.getSprite(3, 12);
+        groundTiles[36] = groundTilesSheet.getSprite(1, 13);
+        groundTiles[37] = groundTilesSheet.getSprite(2, 13);
+        groundTiles[38] = groundTilesSheet.getSprite(3, 13);
 
 
         tiles_x = 3;
