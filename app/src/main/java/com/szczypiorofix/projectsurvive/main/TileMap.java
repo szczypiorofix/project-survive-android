@@ -72,7 +72,7 @@ public class TileMap {
                         if (currentLayer == 1) {
                             if (!once) {
                                 once = true;
-                                groundTiles = new int[tileMapWidth][tileMapHeight];
+                                groundTiles = new int[tileMapWidth][tileMapHeight-1];
                             }
                             x = Integer.parseInt(parser.getAttributeValue(0));
                             y = Integer.parseInt(parser.getAttributeValue(1));
