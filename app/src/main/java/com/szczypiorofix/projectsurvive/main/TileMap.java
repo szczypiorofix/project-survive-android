@@ -14,7 +14,7 @@ import java.io.InputStream;
 public class TileMap {
 
     public final static int COLLISION_TILE = 33;
-    public final static int PLAYER_TILE = 34;
+    public final static int PLAYER_TILE = 11;
     private int level;
     private int tileMapWidth, tileMapHeight;
     private int tileWidth, tileHeight;
@@ -72,7 +72,7 @@ public class TileMap {
                         if (currentLayer == 1) {
                             if (!once) {
                                 once = true;
-                                groundTiles = new int[tileMapWidth][tileMapHeight-1];
+                                groundTiles = new int[tileMapWidth][tileMapHeight];
                             }
                             x = Integer.parseInt(parser.getAttributeValue(0));
                             y = Integer.parseInt(parser.getAttributeValue(1));
